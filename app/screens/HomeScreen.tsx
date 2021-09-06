@@ -1,10 +1,15 @@
 import React from "react";
-import {SafeAreaView, StyleSheet} from "react-native";
+import {Button, SafeAreaView, StyleSheet} from "react-native";
 
-export default function HomeScreen() {
+export default function HomeScreen({navigation}: any) {
+
+    const navToSettings = () => {
+        navigation.navigate("Settings")
+    }
+
     return (
         <SafeAreaView style={styles.background}>
-
+            <Button title={"Go to settings"} onPress={navToSettings}/>
         </SafeAreaView>
     );
 }
