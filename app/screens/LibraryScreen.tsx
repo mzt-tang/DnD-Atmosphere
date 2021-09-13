@@ -10,17 +10,17 @@ export default function LibraryScreen() {
 
     //Partially temporary, need to get data from database instead
     let playlists = [];
-    let couple = [];
+    let row = [];
     const playlistNum = 20;
     for (let i = 0; i < playlistNum; i++) {
-        couple.push({
+        row.push({
             title: "Tavern",
             source: require("../assets/images/tavern.jpg"),
             key: i,
         });
-        if (i%2===1 || i === playlistNum-1) { //Watch out if no. of playlists is odd
-            playlists.push(couple);
-            couple = [];
+        if (i%2===1 || i === playlistNum-1) { 
+            playlists.push(row);
+            row = [];
         }
     }
 
@@ -35,10 +35,10 @@ export default function LibraryScreen() {
             </View>
 
             <ScrollView style={styles.scroll}>
-                {playlists.map(couple => 
+                {playlists.map(row => 
 
-                    <View style={styles.couple} key={"c" + couple[0].key}>
-                        {couple.map(playlist => 
+                    <View style={styles.row} key={"r" + row[0].key}>
+                        {row.map(playlist => 
 
                             <TouchableOpacity style={styles.touchable} onPress={navToPlayList} key={playlist.key}>
                                 <ImageBackground 
@@ -83,7 +83,7 @@ const styles = StyleSheet.create({
         color: "white",
         fontSize: 18,
     },
-    couple: {
+    row: {
         //backgroundColor: "red", //This is good for debugging
         width: "100%",
         flexDirection: "row",
