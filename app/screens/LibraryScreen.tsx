@@ -15,7 +15,8 @@ export default function LibraryScreen() {
     for (let i = 0; i < playlistNum; i++) {
         couple.push({
             title: "Tavern",
-            sourceImage: "../assets/images/tavern.jpg",
+            source: require("../assets/images/tavern.jpg"),
+            key: i,
         });
         if (i%2===1 || i === playlistNum-1) { //Watch out if no. of playlists is odd
             playlists.push(couple);
@@ -36,12 +37,12 @@ export default function LibraryScreen() {
             <ScrollView style={styles.scroll}>
                 {playlists.map(couple => 
 
-                    <View style={styles.couple}>
+                    <View style={styles.couple} key={"c" + couple[0].key}>
                         {couple.map(playlist => 
 
-                            <TouchableOpacity style={styles.touchable} onPress={navToPlayList}>
+                            <TouchableOpacity style={styles.touchable} onPress={navToPlayList} key={playlist.key}>
                                 <ImageBackground 
-                                    source={require("../assets/images/tavern.jpg")} //want this to be sourceImage but doesn't work
+                                    source={playlist.source}
                                     style={styles.image}>
                                     
                                     <Text style={styles.imageText}>{playlist.title}</Text>
