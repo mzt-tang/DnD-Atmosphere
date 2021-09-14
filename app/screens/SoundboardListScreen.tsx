@@ -2,10 +2,10 @@ import React from "react";
 import {Image, ImageBackground, SafeAreaView, ScrollView, StyleSheet, Text, TextInput, TouchableOpacity, View} from "react-native";
 import {SearchBar} from "react-native-elements"
 
-export default function SoundboardsScreen() {
+export default function SoundboardsScreen({navigation}: any) {
 
     function navToSoundboard(){
-        console.log("This would take you to a soundboard");
+        navigation.navigate("Soundboard");
     }
 
     //Partially temporary, need to get data from database instead
