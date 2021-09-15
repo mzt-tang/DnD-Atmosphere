@@ -1,7 +1,45 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import {Button, SafeAreaView, ScrollView, StyleSheet, Text, TouchableOpacity, View} from "react-native";
 import {AntDesign} from "@expo/vector-icons";
+//import Sound from "../components/Sound";
+import {Audio} from "expo-av";
 
+function Sound(props : any) {
+    const [sound, setSound] = React.useState<Audio.Sound>();
+
+    async function playSound() {
+        console.log('Playing Sound');
+        await sound?.replayAsync(); //if not null play sound 
+    }
+
+    //Loads the sound (Sometimes it just stops working if so restart the server)
+    React.useEffect(() => {
+        async function loadSound() {
+            console.log('Loading Sound');
+            const { sound } = await Audio.Sound.createAsync(require('../assets/sounds/mug-clank.wav'));
+            setSound(sound);
+        }
+        
+        loadSound();
+    }, []);
+
+    //Unloads the sound
+    React.useEffect(() => {
+        return sound
+          ? () => {
+              console.log('Unloading Sound');
+              sound.unloadAsync(); }
+          : undefined;
+      }, [sound]);
+    
+    return (
+        <TouchableOpacity onPress={playSound} style={styles.button}>
+            <Text style={styles.soundTitle}>{props.title}</Text>
+            <AntDesign style={styles.icon} name="caretright" color="white" size={45}/>
+            <Text style={styles.soundDuration}>{props.duration}</Text>
+        </TouchableOpacity> 
+    );
+}
 
 export default function BoardScreen({navigation}: any) {
 
@@ -36,11 +74,7 @@ export default function BoardScreen({navigation}: any) {
                     <View style={styles.row} key={"r" + row[0].key}>
                         {row.map(sound => 
 
-                            <TouchableOpacity onPress={playSound} style={styles.button} key={sound.key}>
-                                <Text style={styles.soundTitle}>{sound.title}</Text>
-                                <AntDesign style={styles.icon} name="caretright" color="white" size={45}/>
-                                <Text style={styles.soundDuration}>{sound.duration}</Text>
-                            </TouchableOpacity>
+                            <Sound title="Mug Clank" duration="0:02" key={sound.key}/>
                         )}
                     </View>
                 )}
