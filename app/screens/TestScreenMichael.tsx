@@ -1,5 +1,5 @@
 import React from "react";
-import { StyleSheet, Text, View, TouchableOpacity, SafeAreaView } from 'react-native';
+import {StyleSheet, Text, View, TouchableOpacity, SafeAreaView, Alert} from 'react-native';
 import * as ImagePicker from 'expo-image-picker';
 import firebase from "firebase/app";
 
@@ -9,14 +9,19 @@ export default function TestScreenMichael({navigation}: any) {
         //let result = await ImagePicker.launchCameraAsync();
         let result = await ImagePicker.launchImageLibraryAsync();
         if (!result.cancelled) {
-            await uploadImage(result.uri);
+            await uploadImage(result.uri, "test-image")
+                .then(() => {
+                    Alert.alert("Success");
+                }).catch((error) => {
+                    Alert.alert(error);
+                });
         }
     }
 
-    let uploadImage = async(uri:any) => {
+    let uploadImage = async(uri:any, imageName:string) => {
         const response = await fetch(uri);
         const blob = await response.blob();
-        const ref = firebase.storage().ref().child("my-image");
+        const ref = firebase.storage().ref().child("images/" + imageName);
         return ref.put(blob);
     }
 
@@ -24,8 +29,8 @@ export default function TestScreenMichael({navigation}: any) {
         <SafeAreaView style={styles.screen}>
             <Text style={styles.title}>Firebase Storage</Text>
             <View>
-                <TouchableOpacity style={styles.button}>
-                    <Text style={styles.buttonText}>Upload Audio</Text>
+                <TouchableOpacity style={styles.button} onPress={onChooseImagePress}>
+                    <Text style={styles.buttonText}>Upload Image</Text>
                 </TouchableOpacity>
                 <TouchableOpacity style={styles.button}>
                     <Text style={styles.buttonText}>Select Audio</Text>
