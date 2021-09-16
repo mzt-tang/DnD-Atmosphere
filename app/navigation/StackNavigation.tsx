@@ -4,26 +4,26 @@ import {createStackNavigator} from "@react-navigation/stack";
 
 import BottomTabNavigation from "./BottomTabNavigation";
 import SettingScreen from "../screens/SettingScreen";
-import SoundboardListScreen from "../screens/SoundboardListScreen";
 import SoundboardScreen from "../screens/SoundboardScreen";
+import PlaylistScreen from "../screens/PlaylistScreen";
 
 const Stack = createStackNavigator();
 
 export default function StackNavigation() {
     return (
         <NavigationContainer>
-            <Stack.Navigator>
-                <Stack.Screen name={"Default"} component={ BottomTabNavigation } options={{headerShown: false}}/>
-                <Stack.Screen name={"Settings"} component={ SettingScreen }/>
-                <Stack.Screen name="Soundboards" component={SoundboardListScreen} options={{headerShown: false}}/>
-                <Stack.Screen name="Soundboard" component={SoundboardScreen} options={{
+            <Stack.Navigator screenOptions={{
                     headerTintColor: "#F4963F",
                     headerTitle: "",
                     headerStyle: {
                         backgroundColor: "#121212",
                         borderColor: "#121212",
                     } 
-                }} />
+                }}>
+                <Stack.Screen name="Default" component={ BottomTabNavigation } options={{headerShown: false}}/>
+                <Stack.Screen name="Settings" component={ SettingScreen }/>
+                <Stack.Screen name="Playlist" component={PlaylistScreen} options={{headerShown: false}}/>
+                <Stack.Screen name="Soundboard" component={SoundboardScreen}/>
             </Stack.Navigator>
         </NavigationContainer>
     )

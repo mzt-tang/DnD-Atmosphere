@@ -2,10 +2,10 @@ import React from "react";
 import {Image, ImageBackground, SafeAreaView, ScrollView, StyleSheet, Text, TextInput, TouchableOpacity, View} from "react-native";
 import {SearchBar} from "react-native-elements"
 
-export default function LibraryScreen() {
+export default function LibraryScreen({navigation} : any) {
 
     function navToPlayList(){
-        console.log("This would take you to a playlist");
+        navigation.navigate("Playlist");
     }
 
     //Partially temporary, need to get data from database instead
