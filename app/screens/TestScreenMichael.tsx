@@ -2,6 +2,7 @@ import React from "react";
 import {StyleSheet, Text, View, TouchableOpacity, SafeAreaView, Alert} from 'react-native';
 import * as ImagePicker from 'expo-image-picker';
 import firebase from "firebase/app";
+import 'firebase/storage';
 
 export default function TestScreenMichael({navigation}: any) {
 
@@ -12,8 +13,10 @@ export default function TestScreenMichael({navigation}: any) {
             await uploadImage(result.uri, "test-image")
                 .then(() => {
                     Alert.alert("Success");
+                    console.log("Works")
                 }).catch((error) => {
                     Alert.alert(error);
+                    console.log(error);
                 });
         }
     }
