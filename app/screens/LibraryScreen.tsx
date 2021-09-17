@@ -43,7 +43,8 @@ export default function LibraryScreen({navigation} : any) {
                             <TouchableOpacity style={styles.touchable} onPress={navToPlayList} key={playlist.key}>
                                 <ImageBackground 
                                     source={playlist.source}
-                                    style={styles.image}>
+                                    style={styles.imageBackground}
+                                    imageStyle={styles.image}>
                                     
                                     <Text style={styles.imageText}>{playlist.title}</Text>
                                     
@@ -72,16 +73,22 @@ const styles = StyleSheet.create({
     touchable: {
         borderRadius: 100, //Doesn't work for some reason :( tried it on image as well
     },
-    image: {
+    imageBackground: {
         width: 150,
         height: 150,
         marginRight: 10,
         marginLeft: 0,
         justifyContent: "flex-end", 
+        borderRadius: 30,
+    },
+    image: {
+        borderRadius: 20,
     },
     imageText: {
         color: "white",
         fontSize: 18,
+        marginBottom: 5,
+        marginLeft: 5,
     },
     row: {
         //backgroundColor: "red", //This is good for debugging
