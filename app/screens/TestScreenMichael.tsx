@@ -50,7 +50,7 @@ export default function TestScreenMichael({navigation}: any) {
                     <Text style={styles.buttonText}>Play Audio</Text>
                 </TouchableOpacity>
             </View>
-            <Image style={{width: '50%', height: '50%'}} source={{uri: imageUrl}}/>
+            <Image style={{width: '50%', height: '50%', borderRadius: 30}} source={{uri: imageUrl}}/>
         </SafeAreaView>
     );
 }
