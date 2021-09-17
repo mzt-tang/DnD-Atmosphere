@@ -1,16 +1,24 @@
-import React from "react";
-import {StyleSheet, Text, View, TouchableOpacity, SafeAreaView, Alert} from 'react-native';
+import React, {useEffect, useState} from "react";
+import {StyleSheet, Text, View, TouchableOpacity, SafeAreaView, Alert, Image} from 'react-native';
 import * as ImagePicker from 'expo-image-picker';
 import firebase from "firebase/app";
 import 'firebase/storage';
 
 export default function TestScreenMichael({navigation}: any) {
 
-    let onChooseImagePress = async () => {
+    const [imageUrl, setImageUrl] = useState(undefined);
+
+    useEffect(() => {
+        firebase.storage().ref('/' + 'images/test-image1').getDownloadURL().then((url) => {
+            setImageUrl(url);
+        }).catch((e) => console.log('Errors while downloading => ', e));
+    }, []);
+
+    const onChooseImagePress = async () => {
         //let result = await ImagePicker.launchCameraAsync();
         let result = await ImagePicker.launchImageLibraryAsync();
         if (!result.cancelled) {
-            await uploadImage(result.uri, "test-image")
+            await uploadImage(result.uri, "test-image1")
                 .then(() => {
                     Alert.alert("Success");
                     console.log("Works")
@@ -21,7 +29,7 @@ export default function TestScreenMichael({navigation}: any) {
         }
     }
 
-    let uploadImage = async(uri:any, imageName:string) => {
+    const uploadImage = async (uri: any, imageName: string) => {
         const response = await fetch(uri);
         const blob = await response.blob();
         const ref = firebase.storage().ref().child("images/" + imageName);
@@ -42,6 +50,7 @@ export default function TestScreenMichael({navigation}: any) {
                     <Text style={styles.buttonText}>Play Audio</Text>
                 </TouchableOpacity>
             </View>
+            <Image style={{width: '50%', height: '50%'}} source={{uri: imageUrl}}/>
         </SafeAreaView>
     );
 }

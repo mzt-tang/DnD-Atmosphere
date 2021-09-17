@@ -20,7 +20,7 @@ const firebaseConfig = {
 
 };
 
-const getFirebase = () => {
+export const initialiseFirebase = () => {
     if (!firebase.apps.length) {
         firebase.initializeApp(firebaseConfig);
     }else {
@@ -28,5 +28,3 @@ const getFirebase = () => {
     }
     return firebase;
 }
-
-export const db = getFirebase();
