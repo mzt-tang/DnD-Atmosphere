@@ -6,6 +6,7 @@ import BottomTabNavigation from "./BottomTabNavigation";
 import SettingScreen from "../screens/SettingScreen";
 import SoundboardScreen from "../screens/SoundboardScreen";
 import PlaylistScreen from "../screens/PlaylistScreen";
+import MusicPlayerScreen from "../screens/MusicPlayerScreen";
 
 const Stack = createStackNavigator();
 
@@ -24,6 +25,7 @@ export default function StackNavigation() {
                 <Stack.Screen name="Settings" component={ SettingScreen }/>
                 <Stack.Screen name="Playlist" component={PlaylistScreen} options={{headerShown: false}}/>
                 <Stack.Screen name="Soundboard" component={SoundboardScreen}/>
+                <Stack.Screen name="MusicPlayer" component={MusicPlayerScreen}/>
             </Stack.Navigator>
         </NavigationContainer>
     )
