@@ -12,14 +12,15 @@ function Sound(props : any) {
         await sound?.replayAsync(); //if not null play sound 
     }
 
+    async function loadSound() {
+        console.log('Loading Sound');
+        const { sound } = await Audio.Sound.createAsync(require('../assets/sounds/mug-clank.wav'));
+        setSound(sound);
+    }
+
+
     //Loads the sound (Sometimes it just stops working if so restart the server)
     React.useEffect(() => {
-        async function loadSound() {
-            console.log('Loading Sound');
-            const { sound } = await Audio.Sound.createAsync(require('../assets/sounds/mug-clank.wav'));
-            setSound(sound);
-        }
-        
         loadSound();
     }, []);
 

@@ -3,8 +3,44 @@ import {StyleSheet, Text, View, TouchableOpacity, SafeAreaView, Alert, Image} fr
 import * as ImagePicker from 'expo-image-picker';
 import firebase from "firebase/app";
 import 'firebase/storage';
+import {Audio} from "expo-av";
+import * as url from "url";
 
 export default function TestScreenMichael({navigation}: any) {
+
+    //////
+
+    const [sound, setSound] = React.useState<Audio.Sound>();
+
+    async function playSound() {
+        console.log('Playing Sound');
+        await sound?.replayAsync(); //if not null play sound
+    }
+
+    async function loadSound() {
+        console.log('Loading Sound');
+        const { sound } = await Audio.Sound.createAsync({uri: "https://firebasestorage.googleapis.com/v0/b/dnd-atmosphere-5c555.appspot.com/o/test%2FManuel%20-%20Gas%20Gas%20Gas_128k.mp3?alt=media&token=b32bba79-119c-41da-88df-98eab5cb20e7"});
+        setSound(sound);
+    }
+
+
+    //Loads the sound (Sometimes it just stops working if so restart the server)
+    React.useEffect(() => {
+        loadSound();
+    }, []);
+
+    //Unloads the sound
+    React.useEffect(() => {
+        return sound
+            ? () => {
+                console.log('Unloading Sound');
+                sound.unloadAsync(); }
+            : undefined;
+    }, [sound]);
+
+    /////
+
+
 
     const [imageUrl, setImageUrl] = useState(undefined);
 
@@ -46,7 +82,7 @@ export default function TestScreenMichael({navigation}: any) {
                 <TouchableOpacity style={styles.button}>
                     <Text style={styles.buttonText}>Select Audio</Text>
                 </TouchableOpacity>
-                <TouchableOpacity style={styles.button}>
+                <TouchableOpacity style={styles.button} onPress={playSound}>
                     <Text style={styles.buttonText}>Play Audio</Text>
                 </TouchableOpacity>
             </View>
