@@ -12,6 +12,7 @@
     "preset": "jest-expo"
   },
   "dependencies": {
+    "@babel/runtime": "^7.15.4",
     "@expo/vector-icons": "^12.0.0",
     "@react-native-community/masked-view": "0.1.10",
     "@react-navigation/bottom-tabs": "5.11.2",
@@ -39,7 +40,8 @@
     "react-native-screens": "~3.4.0",
     "react-native-track-player": "^2.1.0",
     "react-native-web": "^0.17.1",
-    "react-router-dom": "^5.2.1"
+    "react-router-dom": "^5.2.1",
+    "typesense": "^0.14.0"
   },
   "devDependencies": {
     "@babel/core": "~7.9.0",
