@@ -4,6 +4,10 @@ import {ImageBackground, SafeAreaView, StyleSheet, Text, TouchableOpacity, View,
 
 export default function PlaylistScreen({navigation}: any) {
 
+    function navToMusicPlayer() {
+        navigation.navigate("MusicPlayer");
+    }
+
     //Partially temporary, need to get data from database instead
     let soundtracks = [];
     const soundtrackNum = 20;
@@ -23,12 +27,12 @@ export default function PlaylistScreen({navigation}: any) {
                     </TouchableOpacity>
 
                     <Text style={styles.subTitle}>Playlist</Text>
-                    <Text style={styles.title}>Tavern</Text>
+                    <Text style={styles.title}>Tavern</Text> 
                 </ImageBackground>
 
                 <ScrollView>
                     {soundtracks.map(soundtrack => 
-                        <TouchableOpacity style={styles.soundtrack} key={soundtrack.key}>
+                        <TouchableOpacity onPress={navToMusicPlayer} style={styles.soundtrack} key={soundtrack.key}>
                             <Text style={styles.trackTitle}>{soundtrack.title}</Text>
                             <Text style={styles.trackArtist}>{soundtrack.artist}</Text>
                         </TouchableOpacity>
