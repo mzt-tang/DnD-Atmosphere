@@ -1,11 +1,28 @@
 import { AntDesign } from "@expo/vector-icons";
-import React from "react";
+import React, { useEffect } from "react";
 import {ImageBackground, SafeAreaView, StyleSheet, Text, TouchableOpacity, View, StatusBar, ScrollView} from "react-native";
+import {Audio, AVPlaybackStatus} from "expo-av";
+import { TrackContext } from "../components/TrackContext";
 
 export default function PlaylistScreen({navigation}: any) {
+    const {queue, setQueue} = React.useContext(TrackContext);
+
+
+    useEffect(() => {
+        loadPlaylistAudio();
+    }, []);
 
     function navToMusicPlayer() {
         navigation.navigate("MusicPlayer");
+    }
+
+    async function loadPlaylistAudio() {
+        const playlist:Audio.Sound[] = [];
+
+        const { sound: soundObject, status: soundStatus} = await Audio.Sound.createAsync(require('../assets/sounds/TavernsOfAzeroth.mp3'));
+        playlist.push(soundObject);
+
+        setQueue(playlist);
     }
 
     //Partially temporary, need to get data from database instead
