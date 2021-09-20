@@ -6,18 +6,9 @@ import { TrackContext } from "../components/TrackContext";
 import MiniPlayer from "../components/MiniPlayer";
 import { QueueInfoContext } from "../components/QueueInfoContext";
 
-export default function PlaylistScreen({navigation}: any) {
+export default function PlaylistScreen({navigation, route}: any) {
     const {queue, setQueue} = React.useContext(TrackContext);
     const {queueInfo, setQueueInfo} = React.useContext(QueueInfoContext);
-
-    React.useEffect(() => {
-        /*return queue
-          ? () => {
-              console.log("Unloading queue 0")
-              queue[0]?.unloadAsync();
-            }
-          : undefined; */
-      }, [queue]);
 
     async function onTrackPress() {
         await loadPlaylistAudio();
@@ -28,7 +19,7 @@ export default function PlaylistScreen({navigation}: any) {
     async function loadPlaylistAudio() {
         if (queueInfo.mpActive){
             console.log("Unloading queue 0")
-            queue[0]?.unloadAsync();
+            queue[queueInfo.queuePos]?.unloadAsync();
         }
 
         const playlist:Audio.Sound[] = [];
@@ -49,6 +40,8 @@ export default function PlaylistScreen({navigation}: any) {
             key: i,
         });
     }
+
+    console.log("playlist name = ", route.params.playlist)
 
     return (
         <SafeAreaView style={styles.background}>

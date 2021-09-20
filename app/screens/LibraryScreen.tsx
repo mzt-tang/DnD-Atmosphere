@@ -1,31 +1,55 @@
-import React from "react";
+import React, { RefObject } from "react";
 import {Image, ImageBackground, SafeAreaView, ScrollView, StyleSheet, Text, TextInput, TouchableOpacity, View} from "react-native";
 import {SearchBar} from "react-native-elements"
+//import "require-from-url";
 
 import {QueueInfoContext} from "../components/QueueInfoContext";
 import MiniPlayer from "../components/MiniPlayer";
+import Playlist from "../components/Playlist";
+import firebase from "firebase/app";
 
 export default function LibraryScreen({navigation} : any) {
     const {queueInfo, setQueueInfo} = React.useContext(QueueInfoContext);
+    const [playlists, setPlaylists] = React.useState<any[]>([])
+
+    React.useEffect(() => {
+        
+        loadFromDatabase();
+    }, []);
+
+    async function loadFromDatabase() {
+        //const playlistsRef = firebase.firestore().collection("soundtrack-categories");
+        const playlistsCollection = await firebase.firestore().collection("soundtrack-categories").get();
+
+        let i = 0;
+        let tempPlaylists: any[] = [];
+        let row: any[] = [];
+        playlistsCollection.docs.forEach(doc => {
+            const image = doc.data().image;
+            console.log(doc.id);
+
+            row.push({
+                title: doc.id,
+                source: {uri: image},
+                key: i,
+            });
+            if (i%2===1) { 
+                tempPlaylists.push(row);
+                row = [];
+            }
+            i++;
+        });
+        if (row.length > 0) {
+            tempPlaylists.push(row);
+        }
+
+        setPlaylists(tempPlaylists);
+        console.log("done loading", playlists);
+
+    }
 
     function navToPlayList(){
         navigation.navigate("Playlist");
-    }
-
-    //Partially temporary, need to get data from database instead
-    let playlists = [];
-    let row = [];
-    const playlistNum = 20;
-    for (let i = 0; i < playlistNum; i++) {
-        row.push({
-            title: "Tavern",
-            source: require("../assets/images/tavern.jpg"),
-            key: i,
-        });
-        if (i%2===1 || i === playlistNum-1) { 
-            playlists.push(row);
-            row = [];
-        }
     }
 
     return (
@@ -43,18 +67,15 @@ export default function LibraryScreen({navigation} : any) {
                     {playlists.map(row => 
 
                         <View style={styles.row} key={"r" + row[0].key}>
-                            {row.map(playlist => 
+                            {row.map((playlist: any) => 
+                                
+                                <Playlist 
+                                    source={playlist.source} 
+                                    title={playlist.title} 
+                                    navigation={navigation} 
+                                    key={playlist.key} 
+                                />
 
-                                <TouchableOpacity style={styles.touchable} onPress={navToPlayList} key={playlist.key}>
-                                    <ImageBackground 
-                                        source={playlist.source}
-                                        style={styles.imageBackground}
-                                        imageStyle={styles.image}>
-                                        
-                                        <Text style={styles.imageText}>{playlist.title}</Text>
-                                        
-                                    </ImageBackground>
-                                </TouchableOpacity>
                             )}
                         </View>
                     )}
@@ -81,26 +102,6 @@ const styles = StyleSheet.create({
         fontSize: 36,
         marginTop: 35,
     },
-    touchable: {
-        borderRadius: 100, //Doesn't work for some reason :( tried it on image as well
-    },
-    imageBackground: {
-        width: 150,
-        height: 150,
-        marginRight: 10,
-        marginLeft: 0,
-        justifyContent: "flex-end", 
-        borderRadius: 30,
-    },
-    image: {
-        borderRadius: 20,
-    },
-    imageText: {
-        color: "white",
-        fontSize: 18,
-        marginBottom: 5,
-        marginLeft: 5,
-    },
     row: {
         //backgroundColor: "red", //This is good for debugging
         width: "100%",
@@ -116,5 +117,5 @@ const styles = StyleSheet.create({
     },
     scroll: {
         //backgroundColor: "yellow",
-    }
+    },
 })

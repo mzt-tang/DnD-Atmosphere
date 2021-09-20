@@ -3,7 +3,10 @@ import React, { useRef } from "react";
 import {Button, Image, SafeAreaView, StyleSheet, Text, TouchableOpacity, View} from "react-native";
 import {Audio, AVPlaybackStatus} from "expo-av";
 import { Slider } from 'react-native-elements';
+
 import { TrackContext } from "../components/TrackContext";
+import {QueueInfoContext} from "../components/QueueInfoContext";
+
 
 export default function MusicPlayerScreen({route}: any) {
     const [sound, setSound] = React.useState<Audio.Sound>();
@@ -11,6 +14,7 @@ export default function MusicPlayerScreen({route}: any) {
     const [position, setPosition] = React.useState<number>(0);
     const [duration, setDuration] = React.useState<number>(0);
     const {queue, setQueue} = React.useContext(TrackContext);
+    const {queueInfo, setQueueInfo} = React.useContext(QueueInfoContext);
 
     //Loads the sound (Sometimes it just stops working if so restart the server)
     React.useEffect(() => {
@@ -23,7 +27,7 @@ export default function MusicPlayerScreen({route}: any) {
     }, []);
 
     async function loadSound() {
-        const soundObject = queue[0];
+        const soundObject = queue[queueInfo.queuePos];
         console.log("queue?: ", queue!==undefined);
         setSound(soundObject);
 

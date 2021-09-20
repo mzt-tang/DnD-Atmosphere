@@ -2,16 +2,20 @@ import { MaterialIcons } from "@expo/vector-icons";
 import React from "react";
 import {Button, SafeAreaView, StyleSheet, Text, TouchableOpacity, Image, View} from "react-native";
 import {Audio} from "expo-av";
-import {TrackContext} from "../components/TrackContext"
 import { useFocusEffect } from "@react-navigation/native";
+
+import {TrackContext} from "../components/TrackContext"
+import {QueueInfoContext} from "../components/QueueInfoContext";
 
 export default function MiniPlayer(props: any) {
     const {queue, setQueue} = React.useContext(TrackContext);
+    const {queueInfo, setQueueInfo} = React.useContext(QueueInfoContext);
+
     const [playing, setPlaying] = React.useState<boolean>(false);
 
     useFocusEffect(() => {
         async function updatePlaying(){
-            const status = await queue[0]?.getStatusAsync();
+            const status = await queue[queueInfo.queuePos]?.getStatusAsync();
             setPlaying(status.isPlaying);
         }
         updatePlaying();
@@ -25,13 +29,13 @@ export default function MiniPlayer(props: any) {
 
     function playSound() {
         console.log('Playing Soundtrack');
-        console.log(queue[0] !== undefined);
+        console.log(queue[queueInfo.queuePos] !== undefined);
 
         if (!playing){
-            queue[0]?.setStatusAsync({shouldPlay: true});
+            queue[queueInfo.queuePos]?.setStatusAsync({shouldPlay: true});
             setPlaying(true);
         } else {
-            queue[0]?.setStatusAsync({shouldPlay: false});
+            queue[queueInfo.queuePos]?.setStatusAsync({shouldPlay: false});
             setPlaying(false);
         }
     }
