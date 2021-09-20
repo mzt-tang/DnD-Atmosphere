@@ -4,7 +4,6 @@ import * as ImagePicker from 'expo-image-picker';
 import firebase from "firebase/app";
 import 'firebase/storage';
 import {Audio} from "expo-av";
-import * as url from "url";
 
 export default function TestScreenMichael({navigation}: any) {
 
