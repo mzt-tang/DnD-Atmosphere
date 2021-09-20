@@ -1,35 +1,86 @@
 import { MaterialIcons } from "@expo/vector-icons";
-import React from "react";
+import React, { useRef } from "react";
 import {Button, Image, SafeAreaView, StyleSheet, Text, TouchableOpacity, View} from "react-native";
-import {Audio} from "expo-av";
+import {Audio, AVPlaybackStatus} from "expo-av";
 import { Slider } from 'react-native-elements';
-import TrackPlayer from "react-native-track-player";
+import { TrackContext } from "../components/TrackContext";
 
-export default function MusicPlayerScreen({navigation}: any) {
+export default function MusicPlayerScreen({route}: any) {
     const [sound, setSound] = React.useState<Audio.Sound>();
-
-    async function playSound() {
-        console.log('Playing Soundtrack');
-        sound?.replayAsync();
-    }
-
-    function sliderValueChanged(value: any){
-        console.log(value);
-        sound?.stopAsync();
-        //sound?.setPositionAsync(value);
-        sound?.playFromPositionAsync(value);
-    }
+    const [playing, setPlaying] = React.useState<boolean>(false); //Set this to sound.isPLaying on init
+    const [position, setPosition] = React.useState<number>(0);
+    const [duration, setDuration] = React.useState<number>(0);
+    const {queue, setQueue} = React.useContext(TrackContext);
 
     //Loads the sound (Sometimes it just stops working if so restart the server)
     React.useEffect(() => {
-        async function loadSound() {
-            const { sound } = await Audio.Sound.createAsync(require('../assets/sounds/TavernsOfAzeroth.mp3'));
-            setSound(sound);
-            console.log('Soundtrack loaded');
-        }
-        
         loadSound();
+
+        return (() => {
+            //sound?.setOnPlaybackStatusUpdate(null);
+            //sound?.unloadAsync();
+        });
     }, []);
+
+    async function loadSound() {
+        const soundObject = queue[0];
+        console.log("queue?: ", queue!==undefined);
+        setSound(soundObject);
+
+        soundObject.setOnPlaybackStatusUpdate(onPlaybackStatusChanged);
+        const status = await soundObject.getStatusAsync();
+        if (status.isLoaded) {
+            setPlaying(status.isPlaying);
+            setDuration(status.durationMillis);
+            console.log("duration = ", status.durationMillis);
+        }
+
+        /*console.log("params = ", route.params);
+        if (route.params.playImmediately !== undefined) {
+            playSound();
+        } */
+    }
+
+    function playSound() {
+        console.log('Playing Soundtrack');
+        console.log(sound !== undefined);
+
+        if (!playing){
+            sound?.setStatusAsync({shouldPlay: true});
+            setPlaying(true);
+        } else {
+            sound?.setStatusAsync({shouldPlay: false});
+            setPlaying(false);
+        }
+    }
+
+    function onPlaybackStatusChanged(playbackStatus: AVPlaybackStatus){
+        //console.log(playbackStatus);
+        if (playbackStatus.isLoaded){
+            setPosition(playbackStatus.positionMillis);
+        }
+    }
+
+    function millisToTimestamp(millis : number) {
+        const date = new Date(millis);
+        let seconds = "" + date.getSeconds();
+        if (date.getSeconds() < 10) {
+            seconds = "0" + seconds;
+        }
+        return date.getMinutes() + ":" + seconds;
+    }
+
+    //Unloads the sound
+    React.useEffect(() => {
+        return sound
+          ? () => {
+              console.log('Removing listener');
+              sound?.setOnPlaybackStatusUpdate(null);
+            }
+          : undefined;
+      }, [sound]);
+    
+    
 
     return (
         <SafeAreaView style={styles.background}>
@@ -43,14 +94,13 @@ export default function MusicPlayerScreen({navigation}: any) {
 
             <View style={styles.seekBox}>
                 <Slider 
-                    value={0} 
-                    maximumValue={100}
-                    onSlidingComplete={value => sliderValueChanged(value)}
+                    value={position} 
+                    maximumValue={duration}
                     thumbStyle={styles.sliderThumb} trackStyle={styles.sliderTrack} 
                     minimumTrackTintColor="#F4963F"/>
                 
-                <Text style={styles.currentTime}>4:54</Text>
-                <Text style={styles.endTime}>13:24</Text> 
+                <Text style={styles.currentTime}>{millisToTimestamp(position)}</Text>
+                <Text style={styles.endTime}>{millisToTimestamp(duration)}</Text> 
             </View>
 
             <View style={styles.icons}>
@@ -138,8 +188,8 @@ const styles = StyleSheet.create({
         alignItems: "center",
     },
     sliderThumb: {
-        width: 8,
-        height: 8,
+        width: 5,
+        height: 5,
         backgroundColor: "#F4963F",
     },
     sliderTrack: {

@@ -1,8 +1,10 @@
 import React, { useEffect, useState } from "react";
 import {Button, SafeAreaView, ScrollView, StyleSheet, Text, TouchableOpacity, View} from "react-native";
 import {AntDesign} from "@expo/vector-icons";
-//import Sound from "../components/Sound";
 import {Audio} from "expo-av";
+
+import {QueueInfoContext} from "../components/QueueInfoContext";
+import MiniPlayer from "../components/MiniPlayer";
 
 function Sound(props : any) {
     const [sound, setSound] = React.useState<Audio.Sound>();
@@ -43,10 +45,7 @@ function Sound(props : any) {
 }
 
 export default function BoardScreen({navigation}: any) {
-
-    function playSound() {
-        console.log("This would play a sound");
-    }
+    const {queueInfo, setQueueInfo} = React.useContext(QueueInfoContext);
 
     //Partially temporary, need to get data from database instead
     let sounds = [];
@@ -66,21 +65,26 @@ export default function BoardScreen({navigation}: any) {
 
     return (
         <SafeAreaView style={styles.background}>
-            <Text style={styles.heading}>Tavern</Text>
-            <Text style={styles.subHeading}>Soundboard</Text>
+            <View style={styles.container}>
+                <Text style={styles.heading}>Tavern</Text>
+                <Text style={styles.subHeading}>Soundboard</Text>
 
-            <ScrollView>
-                {sounds.map(row => 
+                <ScrollView>
+                    {sounds.map(row => 
 
-                    <View style={styles.row} key={"r" + row[0].key}>
-                        {row.map(sound => 
+                        <View style={styles.row} key={"r" + row[0].key}>
+                            {row.map(sound => 
 
-                            <Sound title="Mug Clank" duration="0:02" key={sound.key}/>
-                        )}
-                    </View>
-                )}
-            </ScrollView>
-        </SafeAreaView> 
+                                <Sound title="Mug Clank" duration="0:02" key={sound.key}/>
+                            )}
+                        </View>
+                    )}
+                </ScrollView>
+            </View> 
+
+            {queueInfo.mpActive && <MiniPlayer navigation={navigation}/>}
+
+        </SafeAreaView>
     );
 }
 
@@ -88,6 +92,9 @@ const styles = StyleSheet.create({
     background: {
         flex: 1,
         backgroundColor: "#121212",
+    },
+    container: {
+        flex: 1,
         paddingHorizontal: 25,
     },
     heading: {

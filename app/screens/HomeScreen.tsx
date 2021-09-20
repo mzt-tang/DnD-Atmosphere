@@ -1,8 +1,11 @@
 import React from "react";
-import {Button, SafeAreaView, StyleSheet} from "react-native";
-import {StackScreenProps} from "@react-navigation/stack";
+import {Button, SafeAreaView, StyleSheet, View} from "react-native";
 
-export default function HomeScreen({navigation}: StackScreenProps<any>) {
+import {QueueInfoContext} from "../components/QueueInfoContext";
+import MiniPlayer from "../components/MiniPlayer";
+
+export default function HomeScreen({navigation}: any) {
+    const {queueInfo, setQueueInfo} = React.useContext(QueueInfoContext);
 
     const navToSettings = () => {
         navigation.navigate("Settings")
@@ -10,7 +13,14 @@ export default function HomeScreen({navigation}: StackScreenProps<any>) {
 
     return (
         <SafeAreaView style={styles.background}>
-            <Button title={"Go to settings"} onPress={navToSettings}/>
+            <View style={styles.container}>
+                <Button title={"Go to settings"} onPress={navToSettings}/>
+
+
+            </View>
+
+            {queueInfo.mpActive && <MiniPlayer navigation={navigation}/>}
+
         </SafeAreaView>
     );
 }
@@ -18,6 +28,9 @@ export default function HomeScreen({navigation}: StackScreenProps<any>) {
 const styles = StyleSheet.create({
     background: {
         flex: 1,
-        backgroundColor: "purple",
-    }
+        backgroundColor: "#121212",
+    },
+    container: {
+        flex: 1,
+    },
 })
