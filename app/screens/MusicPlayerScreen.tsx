@@ -5,7 +5,7 @@ import {Audio, AVPlaybackStatus} from "expo-av";
 import { Slider } from 'react-native-elements';
 import { TrackContext } from "../components/TrackContext";
 
-export default function MusicPlayerScreen({navigation}: any) {
+export default function MusicPlayerScreen({route}: any) {
     const [sound, setSound] = React.useState<Audio.Sound>();
     const [playing, setPlaying] = React.useState<boolean>(false); //Set this to sound.isPLaying on init
     const [position, setPosition] = React.useState<number>(0);
@@ -17,8 +17,8 @@ export default function MusicPlayerScreen({navigation}: any) {
         loadSound();
 
         return (() => {
-            sound?.setOnPlaybackStatusUpdate(null);
-            sound?.unloadAsync();
+            //sound?.setOnPlaybackStatusUpdate(null);
+            //sound?.unloadAsync();
         });
     }, []);
 
@@ -33,9 +33,12 @@ export default function MusicPlayerScreen({navigation}: any) {
             setPlaying(status.isPlaying);
             setDuration(status.durationMillis);
             console.log("duration = ", status.durationMillis);
-
-
         }
+
+        /*console.log("params = ", route.params);
+        if (route.params.playImmediately !== undefined) {
+            playSound();
+        } */
     }
 
     function playSound() {

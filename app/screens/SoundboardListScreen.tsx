@@ -2,7 +2,11 @@ import React from "react";
 import {Image, ImageBackground, SafeAreaView, ScrollView, StyleSheet, Text, TextInput, TouchableOpacity, View} from "react-native";
 import {SearchBar} from "react-native-elements"
 
+import {QueueInfoContext} from "../components/QueueInfoContext";
+import MiniPlayer from "../components/MiniPlayer";
+
 export default function SoundboardsScreen({navigation}: any) {
+    const {queueInfo, setQueueInfo} = React.useContext(QueueInfoContext);
 
     function navToSoundboard(){
         navigation.navigate("Soundboard");
@@ -26,34 +30,38 @@ export default function SoundboardsScreen({navigation}: any) {
 
     return (
         <SafeAreaView style={styles.background}>
-            <Text style={styles.heading}>Soundboards</Text>
+            <View style={styles.container}>
+                <Text style={styles.heading}>Soundboards</Text>
 
-            <View style={styles.searchBar}>
-                <TextInput
-                    placeholder="Search..."
-                />
+                <View style={styles.searchBar}>
+                    <TextInput
+                        placeholder="Search..."
+                    />
+                </View>
+
+                <ScrollView style={styles.scroll}>
+                    {soundboards.map(row => 
+
+                        <View style={styles.row} key={"r" + row[0].key}>
+                            {row.map(playlist => 
+
+                                <TouchableOpacity style={styles.touchable} onPress={navToSoundboard} key={playlist.key}>
+                                    <ImageBackground 
+                                        source={playlist.source}
+                                        style={styles.imageBackground}
+                                        imageStyle={styles.image}>
+                                        
+                                        <Text style={styles.imageText}>{playlist.title}</Text>
+                                        
+                                    </ImageBackground>
+                                </TouchableOpacity>
+                            )}
+                        </View>
+                    )}
+                </ScrollView>
             </View>
 
-            <ScrollView style={styles.scroll}>
-                {soundboards.map(row => 
-
-                    <View style={styles.row} key={"r" + row[0].key}>
-                        {row.map(playlist => 
-
-                            <TouchableOpacity style={styles.touchable} onPress={navToSoundboard} key={playlist.key}>
-                                <ImageBackground 
-                                    source={playlist.source}
-                                    style={styles.imageBackground}
-                                    imageStyle={styles.image}>
-                                    
-                                    <Text style={styles.imageText}>{playlist.title}</Text>
-                                    
-                                </ImageBackground>
-                            </TouchableOpacity>
-                        )}
-                    </View>
-                )}
-            </ScrollView>
+            {queueInfo.mpActive && <MiniPlayer navigation={navigation}/>}
 
         </SafeAreaView>
     );
@@ -63,6 +71,9 @@ const styles = StyleSheet.create({
     background: {
         flex: 1,
         backgroundColor: "#121212",
+    },
+    container: {
+        flex: 1,
         paddingHorizontal: 25,
     },
     heading: {

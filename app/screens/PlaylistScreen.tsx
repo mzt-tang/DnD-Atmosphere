@@ -1,22 +1,36 @@
 import { AntDesign } from "@expo/vector-icons";
-import React, { useEffect } from "react";
+import React from "react";
 import {ImageBackground, SafeAreaView, StyleSheet, Text, TouchableOpacity, View, StatusBar, ScrollView} from "react-native";
 import {Audio, AVPlaybackStatus} from "expo-av";
 import { TrackContext } from "../components/TrackContext";
+import MiniPlayer from "../components/MiniPlayer";
+import { QueueInfoContext } from "../components/QueueInfoContext";
 
 export default function PlaylistScreen({navigation}: any) {
     const {queue, setQueue} = React.useContext(TrackContext);
+    const {queueInfo, setQueueInfo} = React.useContext(QueueInfoContext);
 
+    React.useEffect(() => {
+        /*return queue
+          ? () => {
+              console.log("Unloading queue 0")
+              queue[0]?.unloadAsync();
+            }
+          : undefined; */
+      }, [queue]);
 
-    useEffect(() => {
-        loadPlaylistAudio();
-    }, []);
-
-    function navToMusicPlayer() {
+    async function onTrackPress() {
+        await loadPlaylistAudio();
         navigation.navigate("MusicPlayer");
+        setQueueInfo({...queueInfo, mpActive: true});
     }
 
     async function loadPlaylistAudio() {
+        if (queueInfo.mpActive){
+            console.log("Unloading queue 0")
+            queue[0]?.unloadAsync();
+        }
+
         const playlist:Audio.Sound[] = [];
 
         const { sound: soundObject, status: soundStatus} = await Audio.Sound.createAsync(require('../assets/sounds/TavernsOfAzeroth.mp3'));
@@ -49,12 +63,16 @@ export default function PlaylistScreen({navigation}: any) {
 
                 <ScrollView>
                     {soundtracks.map(soundtrack => 
-                        <TouchableOpacity onPress={navToMusicPlayer} style={styles.soundtrack} key={soundtrack.key}>
+                        <TouchableOpacity onPress={onTrackPress} style={styles.soundtrack} key={soundtrack.key}>
                             <Text style={styles.trackTitle}>{soundtrack.title}</Text>
                             <Text style={styles.trackArtist}>{soundtrack.artist}</Text>
                         </TouchableOpacity>
                     )}
+                    
                 </ScrollView>
+
+                {queueInfo.mpActive && <MiniPlayer navigation={navigation}/>}
+                
         </SafeAreaView>
     );
 }
