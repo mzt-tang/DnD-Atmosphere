@@ -1,6 +1,7 @@
 import firebase from "firebase/app";
 import "firebase/firestore";
 import 'firebase/storage';
+import 'firebase/auth';
 
 const firebaseConfig = {
 
@@ -21,10 +22,12 @@ const firebaseConfig = {
 };
 
 export const initialiseFirebase = () => {
-    if (!firebase.apps.length) {
+    if (firebase.apps.length === 0) {
         firebase.initializeApp(firebaseConfig);
     }else {
         firebase.app(); // if already initialized, use that one
     }
     return firebase;
 }
+
+export const db = initialiseFirebase();

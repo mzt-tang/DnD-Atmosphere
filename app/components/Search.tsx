@@ -1,16 +1,17 @@
-import React, {Component} from "react";
-import {InstantSearch, connectSearchBox, connectInfiniteHits, connectHighlight} from 'react-instantsearch-native';
-import PropTypes from "prop-types";
-import algoliasearch from "algoliasearch";
+import React from "react";
 import {View, StyleSheet, Image, TextInput, FlatList, Text} from "react-native";
-import {FontAwesome} from "@expo/vector-icons";
+
+import {InstantSearch, connectSearchBox, connectInfiniteHits} from 'react-instantsearch-native';
+import algoliasearch from "algoliasearch";
+
 
 export default function Search() {
-
-    const client = algoliasearch('X3LKR35NR9', 'ae4c0b75ed4213da4cc7487e78c42256')
+    // API key from from the Algolia API
+    const client = algoliasearch('X3LKR35NR9', 'ae4c0b75ed4213da4cc7487e78c42256');
 
     return (
         <View style={styles.mainContainer}>
+            {/*Initialise and create the search client from index "Audio"*/}
             <InstantSearch searchClient={client} indexName={"Audio"}>
                 <View style={styles.searchContainer}>
                     <SearchBox />
@@ -54,7 +55,6 @@ const Results = connectInfiniteHits(({ hits, hasMore, refineNext }) => {
 
 const Repository = ({ repo }:any) => (
     <View style={styles.mainContainer}>
-        <FontAwesome name="github"/>
         <View style={{ flex: 1 }}>
             <Text
                 ellipsizeMode="tail"
@@ -64,7 +64,6 @@ const Repository = ({ repo }:any) => (
             </Text>
         </View>
         <View>
-            <FontAwesome name="star"/>
             <Text>{repo.title}</Text>
         </View>
     </View>
@@ -84,10 +83,6 @@ const styles = StyleSheet.create({
         flexDirection: "row",
         justifyContent: "flex-start",
         alignItems: "center"
-    },
-    logo: {
-        height: 20,
-        width: 20
     },
     textInput: {
         height: 30,
