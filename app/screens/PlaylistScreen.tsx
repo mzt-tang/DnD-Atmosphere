@@ -2,13 +2,38 @@ import { AntDesign } from "@expo/vector-icons";
 import React from "react";
 import {ImageBackground, SafeAreaView, StyleSheet, Text, TouchableOpacity, View, StatusBar, ScrollView} from "react-native";
 import {Audio, AVPlaybackStatus} from "expo-av";
+
 import { TrackContext } from "../components/TrackContext";
 import MiniPlayer from "../components/MiniPlayer";
+import Soundtrack from "../components/Soundtrack";
 import { QueueInfoContext } from "../components/QueueInfoContext";
+import firebase from "firebase/app";
 
 export default function PlaylistScreen({navigation, route}: any) {
     const {queue, setQueue} = React.useContext(TrackContext);
     const {queueInfo, setQueueInfo} = React.useContext(QueueInfoContext);
+    const [soundtracks, setSoundtracks] = React.useState<any[]>([]);
+
+    React.useEffect(() => {
+        getSoundtrackData();
+    }, []);
+
+    async function getSoundtrackData() {
+        const soundtrackCollection = await firebase.firestore().collection("soundtrack-categories").doc(route.params.playlist).get();
+        const tracks = soundtrackCollection.data()?.tracks;
+
+        let tempSoundtracks: any[] = [];
+        let i = 0;
+        for (let i = 0; i < tracks.length; i++){
+            let track = await tracks[i].get();
+            track = track.data();
+            track = {...track, key: i};
+            tempSoundtracks.push(track);
+        }
+
+        console.log("Done loading");
+        setSoundtracks(tempSoundtracks);
+    }
 
     async function onTrackPress() {
         await loadPlaylistAudio();
@@ -23,25 +48,11 @@ export default function PlaylistScreen({navigation, route}: any) {
         }
 
         const playlist:Audio.Sound[] = [];
-
         const { sound: soundObject, status: soundStatus} = await Audio.Sound.createAsync(require('../assets/sounds/TavernsOfAzeroth.mp3'));
-        playlist.push(soundObject);
+        playlist.push(soundObject); 
 
         setQueue(playlist);
     }
-
-    //Partially temporary, need to get data from database instead
-    let soundtracks = [];
-    const soundtrackNum = 20;
-    for (let i = 0; i < soundtrackNum; i++) {
-        soundtracks.push({
-            title: "Soundtrack Name",
-            artist: "Artist Name",
-            key: i,
-        });
-    }
-
-    console.log("playlist name = ", route.params.playlist)
 
     return (
         <SafeAreaView style={styles.background}>
@@ -56,12 +67,8 @@ export default function PlaylistScreen({navigation, route}: any) {
 
                 <ScrollView>
                     {soundtracks.map(soundtrack => 
-                        <TouchableOpacity onPress={onTrackPress} style={styles.soundtrack} key={soundtrack.key}>
-                            <Text style={styles.trackTitle}>{soundtrack.title}</Text>
-                            <Text style={styles.trackArtist}>{soundtrack.artist}</Text>
-                        </TouchableOpacity>
+                        <Soundtrack title={soundtrack.title} onTrackPress={onTrackPress} key={soundtrack.key}/>
                     )}
-                    
                 </ScrollView>
 
                 {queueInfo.mpActive && <MiniPlayer navigation={navigation}/>}
@@ -102,8 +109,6 @@ const styles = StyleSheet.create({
         height: 70,
         borderColor: "white",
         borderTopWidth: 3,
-        //borderBottomWidth: 3,
-        //backgroundColor: "red",
     },
     trackTitle: {
         color: "white",
@@ -119,3 +124,8 @@ const styles = StyleSheet.create({
         marginLeft: 10,
     },
 })
+
+/*<TouchableOpacity onPress={onTrackPress} style={styles.soundtrack} key={soundtrack.key}>
+    <Text style={styles.trackTitle}>{soundtrack.title}</Text>
+    <Text style={styles.trackArtist}>Artist Name</Text>
+</TouchableOpacity>*/
