@@ -52,8 +52,6 @@ export default function PlaylistScreen({navigation, route}: any) {
         playlist.push(soundObject); 
 
         setQueue(playlist);
-
-
         setQueueInfo({...queueInfo, mpActive: true, trackTitle: trackObject.title, trackImage: playlistObject.imageSource, trackPlaylist: playlistObject.playlist});
         
     }
