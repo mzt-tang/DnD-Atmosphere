@@ -70,6 +70,7 @@ export default function LibraryScreen({navigation} : any) {
                                     title={playlist.title} 
                                     navigation={navigation} 
                                     key={playlist.key} 
+                                    navTo="Playlist"
                                 />
 
                             )}

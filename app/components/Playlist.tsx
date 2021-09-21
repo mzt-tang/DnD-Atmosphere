@@ -4,7 +4,7 @@ import {Button, SafeAreaView, StyleSheet, View, TouchableOpacity, ImageBackgroun
 export default function Playlist(props: any) {
 
     function navToPlayList(){
-        props.navigation.navigate("Playlist", {playlist: props.title, imageSource: props.source});
+        props.navigation.navigate(props.navTo, {playlist: props.title, imageSource: props.source});
     }
     
     return (

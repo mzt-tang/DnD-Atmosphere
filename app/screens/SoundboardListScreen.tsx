@@ -4,16 +4,53 @@ import {SearchBar} from "react-native-elements"
 
 import {QueueInfoContext} from "../components/QueueInfoContext";
 import MiniPlayer from "../components/MiniPlayer";
+import Playlist from "../components/Playlist";
+import firebase from "firebase/app";
 
 export default function SoundboardsScreen({navigation}: any) {
     const {queueInfo, setQueueInfo} = React.useContext(QueueInfoContext);
+    const [soundboards, setSoundboards] = React.useState<any[]>([])
+
+    React.useEffect(() => {
+        loadFromDatabase();
+    }, []);
+
+    async function loadFromDatabase() {
+        const playlistsCollection = await firebase.firestore().collection("soundeffect-categories").get();
+
+        let i = 0;
+        let tempSoundboards: any[] = [];
+        let row: any[] = [];
+        playlistsCollection.docs.forEach(doc => {
+            const image = doc.data().image;
+            console.log(doc.id);
+
+            row.push({
+                title: doc.id,
+                source: {uri: image},
+                key: i,
+            });
+            if (i%2===1) { 
+                tempSoundboards.push(row);
+                row = [];
+            }
+            i++;
+        });
+        if (row.length > 0) {
+            tempSoundboards.push(row);
+        }
+
+        setSoundboards(tempSoundboards);
+        console.log("done loading", soundboards);
+
+    }
 
     function navToSoundboard(){
         navigation.navigate("Soundboard");
     }
 
     //Partially temporary, need to get data from database instead
-    let soundboards = [];
+    /*let soundboards = [];
     let row = [];
     const soundboardNum = 20;
     for (let i = 0; i < soundboardNum; i++) {
@@ -26,7 +63,7 @@ export default function SoundboardsScreen({navigation}: any) {
             soundboards.push(row);
             row = [];
         }
-    }
+    } */
 
     return (
         <SafeAreaView style={styles.background}>
@@ -43,18 +80,16 @@ export default function SoundboardsScreen({navigation}: any) {
                     {soundboards.map(row => 
 
                         <View style={styles.row} key={"r" + row[0].key}>
-                            {row.map(playlist => 
+                            {row.map((soundboard: any) => 
 
-                                <TouchableOpacity style={styles.touchable} onPress={navToSoundboard} key={playlist.key}>
-                                    <ImageBackground 
-                                        source={playlist.source}
-                                        style={styles.imageBackground}
-                                        imageStyle={styles.image}>
-                                        
-                                        <Text style={styles.imageText}>{playlist.title}</Text>
-                                        
-                                    </ImageBackground>
-                                </TouchableOpacity>
+                                <Playlist 
+                                    source={soundboard.source} 
+                                    title={soundboard.title} 
+                                    navigation={navigation} 
+                                    key={soundboard.key} 
+                                    navTo="Soundboard"
+                                />
+                                
                             )}
                         </View>
                     )}
@@ -118,3 +153,16 @@ const styles = StyleSheet.create({
         //backgroundColor: "yellow",
     }
 })
+
+/*
+<TouchableOpacity style={styles.touchable} onPress={navToSoundboard} key={soundboard.key}>
+                                    <ImageBackground 
+                                        source={soundboard.source}
+                                        style={styles.imageBackground}
+                                        imageStyle={styles.image}>
+                                        
+                                        <Text style={styles.imageText}>{soundboard.title}</Text>
+                                        
+                                    </ImageBackground>
+                                </TouchableOpacity>
+ */
