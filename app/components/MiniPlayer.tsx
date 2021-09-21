@@ -43,9 +43,9 @@ export default function MiniPlayer(props: any) {
     return (
         <SafeAreaView style={styles.background}>
             <TouchableOpacity style={styles.bigPlayerButton} onPress={navToMusicPlayer}>
-                <Image source={require("../assets/images/tavern.jpg")} style={styles.image} />
+                <Image source={queueInfo.trackImage} style={styles.image} />
                 <View>
-                    <Text style={styles.trackTitle}>Soundtrack Name</Text>
+                    <Text style={styles.trackTitle}>{queueInfo.trackTitle}</Text>
                     <Text style={styles.trackArtist}>Artist Name</Text>
                 </View>
                 

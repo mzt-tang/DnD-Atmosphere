@@ -35,39 +35,43 @@ export default function PlaylistScreen({navigation, route}: any) {
         setSoundtracks(tempSoundtracks);
     }
 
-    async function onTrackPress() {
-        await loadPlaylistAudio();
+    async function onTrackPress(trackObject: any, playlistObject: any) {
+        await loadPlaylistAudio(trackObject, playlistObject);
         navigation.navigate("MusicPlayer");
-        setQueueInfo({...queueInfo, mpActive: true});
+        
     }
 
-    async function loadPlaylistAudio() {
+    async function loadPlaylistAudio(trackObject: any, playlistObject: any) {
         if (queueInfo.mpActive){
             console.log("Unloading queue 0")
             queue[queueInfo.queuePos]?.unloadAsync();
         }
 
         const playlist:Audio.Sound[] = [];
-        const { sound: soundObject, status: soundStatus} = await Audio.Sound.createAsync(require('../assets/sounds/TavernsOfAzeroth.mp3'));
+        const { sound: soundObject, status: soundStatus} = await Audio.Sound.createAsync({uri: trackObject.link});
         playlist.push(soundObject); 
 
         setQueue(playlist);
+
+
+        setQueueInfo({...queueInfo, mpActive: true, trackTitle: trackObject.title, trackImage: playlistObject.imageSource, trackPlaylist: playlistObject.playlist});
+        
     }
 
     return (
         <SafeAreaView style={styles.background}>
-                <ImageBackground source={require("../assets/images/tavern.jpg")} style={styles.imageHeader}>
+                <ImageBackground source={route.params.imageSource} style={styles.imageHeader}>
                     <TouchableOpacity style={styles.backButton} onPress={navigation.goBack}>
                         <AntDesign name="arrowleft" color="white" size={25}/>
                     </TouchableOpacity>
 
                     <Text style={styles.subTitle}>Playlist</Text>
-                    <Text style={styles.title}>Tavern</Text> 
+                    <Text style={styles.title}>{route.params.playlist}</Text> 
                 </ImageBackground>
 
                 <ScrollView>
                     {soundtracks.map(soundtrack => 
-                        <Soundtrack title={soundtrack.title} onTrackPress={onTrackPress} key={soundtrack.key}/>
+                        <Soundtrack title={soundtrack.title} onTrackPress={onTrackPress} key={soundtrack.key} trackObject={soundtrack} playlistObject={route.params}/>
                     )}
                 </ScrollView>
 

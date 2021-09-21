@@ -34,6 +34,9 @@ export default function RootNavigator() {
     const [queueInfo, setQueueInfo] = React.useState({
         mpActive: false,
         queuePos: 0,
+        trackTitle: "",
+        trackImage: "",
+        trackPlaylist: "",
     });
 
     if (isLoading) {

@@ -3,7 +3,7 @@ import {Button, SafeAreaView, StyleSheet, View, TouchableOpacity, ImageBackgroun
 
 export default function Soundtrack(props: any) {    
     return (
-        <TouchableOpacity onPress={props.onTrackPress} style={styles.soundtrack}>
+        <TouchableOpacity onPress={() => props.onTrackPress(props.trackObject, props.playlistObject)} style={styles.soundtrack}>
             <Text style={styles.trackTitle}>{props.title}</Text>
             <Text style={styles.trackArtist}>Artist Name</Text>
         </TouchableOpacity>

@@ -48,10 +48,6 @@ export default function LibraryScreen({navigation} : any) {
 
     }
 
-    function navToPlayList(){
-        navigation.navigate("Playlist");
-    }
-
     return (
         <SafeAreaView style={styles.background}>
             <View style={styles.container}>

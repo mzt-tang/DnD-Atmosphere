@@ -10,20 +10,14 @@ import {QueueInfoContext} from "../components/QueueInfoContext";
 
 export default function MusicPlayerScreen({route}: any) {
     const [sound, setSound] = React.useState<Audio.Sound>();
-    const [playing, setPlaying] = React.useState<boolean>(false); //Set this to sound.isPLaying on init
+    const [playing, setPlaying] = React.useState<boolean>(false);
     const [position, setPosition] = React.useState<number>(0);
     const [duration, setDuration] = React.useState<number>(0);
     const {queue, setQueue} = React.useContext(TrackContext);
     const {queueInfo, setQueueInfo} = React.useContext(QueueInfoContext);
 
-    //Loads the sound (Sometimes it just stops working if so restart the server)
     React.useEffect(() => {
         loadSound();
-
-        return (() => {
-            //sound?.setOnPlaybackStatusUpdate(null);
-            //sound?.unloadAsync();
-        });
     }, []);
 
     async function loadSound() {
@@ -38,11 +32,6 @@ export default function MusicPlayerScreen({route}: any) {
             setDuration(status.durationMillis);
             console.log("duration = ", status.durationMillis);
         }
-
-        /*console.log("params = ", route.params);
-        if (route.params.playImmediately !== undefined) {
-            playSound();
-        } */
     }
 
     function playSound() {
@@ -89,11 +78,11 @@ export default function MusicPlayerScreen({route}: any) {
     return (
         <SafeAreaView style={styles.background}>
             <Text style={styles.subHeading}>Playing from</Text>
-            <Text style={styles.heading}>Tavern</Text>
+            <Text style={styles.heading}>{queueInfo.trackPlaylist}</Text>
 
-            <Image source={require("../assets/images/tavern.jpg")} style={styles.image}/>
+            <Image source={queueInfo.trackImage} style={styles.image}/>
 
-            <Text style={styles.trackName}>Soundtrack Name</Text>
+            <Text style={styles.trackName}>{queueInfo.trackTitle}</Text>
             <Text style={styles.artist}>Soundtrack Artist</Text>
 
             <View style={styles.seekBox}>
@@ -115,7 +104,7 @@ export default function MusicPlayerScreen({route}: any) {
                     <MaterialIcons name="skip-previous" color="#F4963F" size={60}/>
                 </TouchableOpacity>
                 <TouchableOpacity onPress={playSound}>
-                    <MaterialIcons name="play-circle-outline" color="#F4963F" size={60}/>    
+                    <MaterialIcons name={playing? "pause-circle-outline" : "play-circle-outline"} color="#F4963F" size={60}/>    
                 </TouchableOpacity>
                 <TouchableOpacity>
                     <MaterialIcons name="skip-next" color="#F4963F" size={60}/>
