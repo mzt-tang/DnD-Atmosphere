@@ -15,10 +15,10 @@ export default function PlaylistScreen({navigation, route}: any) {
     const [soundtracks, setSoundtracks] = React.useState<any[]>([]);
 
     React.useEffect(() => {
-        getSoundtrackData();
+        loadSoundtrackData();
     }, []);
 
-    async function getSoundtrackData() {
+    async function loadSoundtrackData() {
         const soundtrackCollection = await firebase.firestore().collection("soundtrack-categories").doc(route.params.playlist).get();
         const tracks = soundtrackCollection.data()?.tracks;
 

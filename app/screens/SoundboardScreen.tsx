@@ -5,9 +5,11 @@ import {Audio} from "expo-av";
 
 import {QueueInfoContext} from "../components/QueueInfoContext";
 import MiniPlayer from "../components/MiniPlayer";
+import firebase from "firebase/app";
 
 function Sound(props : any) {
     const [sound, setSound] = React.useState<Audio.Sound>();
+    const [duration, setDuration] = React.useState<number>(0);
 
     async function playSound() {
         console.log('Playing Sound');
@@ -16,8 +18,10 @@ function Sound(props : any) {
 
     async function loadSound() {
         console.log('Loading Sound');
-        const { sound } = await Audio.Sound.createAsync(require('../assets/sounds/mug-clank.wav'));
+        const { sound , status} = await Audio.Sound.createAsync({uri: props.audioSource});
+
         setSound(sound);
+        setDuration(status.durationMillis);
     }
 
 
@@ -34,21 +38,57 @@ function Sound(props : any) {
               sound.unloadAsync(); }
           : undefined;
       }, [sound]);
+
+    function millisToTimestamp(millis : number) {
+        const date = new Date(millis);
+        let seconds = "" + date.getSeconds();
+        if (date.getSeconds() < 10) {
+            seconds = "0" + seconds;
+        }
+        return date.getMinutes() + ":" + seconds;
+    }
     
     return (
         <TouchableOpacity onPress={playSound} style={styles.button}>
             <Text style={styles.soundTitle}>{props.title}</Text>
             <AntDesign style={styles.icon} name="caretright" color="white" size={45}/>
-            <Text style={styles.soundDuration}>{props.duration}</Text>
+            <Text style={styles.soundDuration}>{millisToTimestamp(duration)}</Text>
         </TouchableOpacity> 
     );
 }
 
-export default function BoardScreen({navigation}: any) {
+export default function BoardScreen(props: any) {
     const {queueInfo, setQueueInfo} = React.useContext(QueueInfoContext);
+    const [sounds, setSounds] = React.useState<any[]>([]);
+
+    React.useEffect(() => {
+        loadSoundtrackData();
+    }, []);
+
+    async function loadSoundtrackData() {
+        const soundtrackCollection = await firebase.firestore().collection("soundeffect-categories").doc(props.route.params.playlist).get();
+        const effects = await soundtrackCollection.data()?.effects;
+
+        let tempSounds: any[] = [];
+        let row = [];
+        let i = 0;
+        for (let i = 0; i < effects.length; i++){
+            let track = await effects[i].get();
+            track = track.data();
+            track = {...track, key: i};
+            row.push(track);
+            if (i%3 === 2 || i === effects.length-1) { 
+                tempSounds.push(row);
+                row = [];
+            }
+        } 
+
+        console.log("Done loading");
+        setSounds(tempSounds);
+    }
 
     //Partially temporary, need to get data from database instead
-    let sounds = [];
+    /*let sounds = [];
     let row = [];
     const soundboardNum = 18;
     for (let i = 0; i < soundboardNum; i++) {
@@ -61,28 +101,28 @@ export default function BoardScreen({navigation}: any) {
             sounds.push(row);
             row = [];
         }
-    }
+    } */
 
     return (
         <SafeAreaView style={styles.background}>
             <View style={styles.container}>
-                <Text style={styles.heading}>Tavern</Text>
+                <Text style={styles.heading}>{props.route.params.playlist}</Text>
                 <Text style={styles.subHeading}>Soundboard</Text>
 
                 <ScrollView>
                     {sounds.map(row => 
 
                         <View style={styles.row} key={"r" + row[0].key}>
-                            {row.map(sound => 
+                            {row.map((sound: any) => 
 
-                                <Sound title="Mug Clank" duration="0:02" key={sound.key}/>
+                                <Sound title={sound.title} key={sound.key} audioSource={sound.link}/>
                             )}
                         </View>
                     )}
                 </ScrollView>
             </View> 
 
-            {queueInfo.mpActive && <MiniPlayer navigation={navigation}/>}
+            {queueInfo.mpActive && <MiniPlayer navigation={props.navigation}/>}
 
         </SafeAreaView>
     );
