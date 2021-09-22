@@ -3,7 +3,7 @@ import {createStackNavigator} from "@react-navigation/stack";
 
 import BottomTabNavigation from "./BottomTabNavigation";
 import SoundboardScreen from "../screens/SoundboardScreen";
-import PlaylistScreenController from "../screens/PlaylistScreenController";
+import {PlaylistScreenController} from "../screenControllers";
 import MusicPlayerScreen from "../screens/MusicPlayerScreen";
 import { LogBox } from 'react-native';
 

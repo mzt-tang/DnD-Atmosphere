@@ -2,7 +2,7 @@ import HomeScreen from "./HomeScreen";
 import {LoginScreen} from "./LoginScreen";
 import {LibraryScreen} from "./LibraryScreen";
 import MusicPlayerScreen from "./MusicPlayerScreen";
-import PlaylistScreenController from "./PlaylistScreenController";
+import {PlaylistScreen} from "./PlaylistScreen";
 import SearchScreen from "./SearchScreen";
 import {SignupScreen} from "./SignupScreen";
 import {SoundboardListScreen} from "./SoundboardListScreen";
@@ -13,7 +13,7 @@ export {
     LoginScreen,
     LibraryScreen,
     MusicPlayerScreen,
-    PlaylistScreenController,
+    PlaylistScreen,
     SearchScreen,
     SignupScreen,
     SoundboardListScreen,
