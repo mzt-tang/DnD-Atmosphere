@@ -5,7 +5,7 @@ import Playlist from "./Playlist";
 import {QueueInfoContext} from "./QueueInfoContext";
 import Search from "./Search";
 import Sound from "./Sound";
-import Soundtrack from "./Soundtrack";
+import {Soundtrack} from "./Soundtrack";
 import {TrackContext} from "./TrackContext";
 
 export {

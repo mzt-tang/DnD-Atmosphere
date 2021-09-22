@@ -1,7 +1,7 @@
 import React from "react";
 import {Button, SafeAreaView, StyleSheet, View, TouchableOpacity, ImageBackground, Text} from "react-native";
 
-export default function Soundtrack(props: any) {    
+export const Soundtrack = (props: any) => {
     return (
         <TouchableOpacity onPress={() => props.onTrackPress(props.trackObject, props.playlistObject)} style={styles.soundtrack}>
             <Text style={styles.trackTitle}>{props.title}</Text>
