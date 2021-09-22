@@ -4,8 +4,7 @@ import {Button, Image, SafeAreaView, StyleSheet, Text, TouchableOpacity, View} f
 import {Audio, AVPlaybackStatus} from "expo-av";
 import { Slider } from 'react-native-elements';
 
-import { TrackContext } from "../components/TrackContext";
-import {QueueInfoContext} from "../components/QueueInfoContext";
+import { TrackContext, QueueInfoContext } from "../components";
 
 
 export default function MusicPlayerScreen({route}: any) {

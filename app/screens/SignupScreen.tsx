@@ -2,7 +2,7 @@ import { StatusBar } from 'expo-status-bar';
 import React from 'react';
 import {StyleSheet, Text, View, Button as RNButton, Button} from 'react-native';
 
-import InputField from "../components/InputField";
+import {InputField} from "../components";
 
 export const SignupScreen = ({email, setEmail, passwordVisibility, rightIcon, password, setPassword,
                           handlePasswordVisibility, onHandleSignupError, onHandleSignup, navigateToLogin}: any) => {

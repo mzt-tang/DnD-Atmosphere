@@ -1,6 +1,6 @@
 import React from "react";
 import {SafeAreaView, StyleSheet} from "react-native";
-import Search from "../components/Search";
+import {Search} from "../components";
 
 export default function SearchScreen() {
     return (

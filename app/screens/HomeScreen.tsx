@@ -1,12 +1,10 @@
 import React from "react";
-import {Button, SafeAreaView, StyleSheet, Text, View, TouchableOpacity, StatusBar, ImageBackground, Touchable} from "react-native";
+import {Button, SafeAreaView, StyleSheet, Text, View, TouchableOpacity, StatusBar, ImageBackground} from "react-native";
 
-import {QueueInfoContext} from "../components/QueueInfoContext";
-import MiniPlayer from "../components/MiniPlayer";
+import {QueueInfoContext, MiniPlayer} from "../components";
 import {db} from "../constants/Firebase";
 import {AuthenticatedUserContext} from "../navigation/AuthenticatedUserProvider";
-import {Card} from "react-native-elements";
-import {AntDesign, Ionicons, MaterialIcons} from "@expo/vector-icons";
+import {AntDesign} from "@expo/vector-icons";
 
 const auth = db.auth();
 

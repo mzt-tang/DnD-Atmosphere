@@ -1,11 +1,8 @@
 import React, { RefObject } from "react";
-import {Image, ImageBackground, SafeAreaView, ScrollView, StyleSheet, Text, TextInput, TouchableOpacity, View} from "react-native";
+import {SafeAreaView, ScrollView, StyleSheet, Text, View} from "react-native";
 import {SearchBar} from "react-native-elements"
-//import "require-from-url";
 
-import {QueueInfoContext} from "../components/QueueInfoContext";
-import MiniPlayer from "../components/MiniPlayer";
-import Playlist from "../components/Playlist";
+import {QueueInfoContext, MiniPlayer, Playlist} from "../components";
 import firebase from "firebase/app";
 
 export default function LibraryScreen({navigation} : any) {

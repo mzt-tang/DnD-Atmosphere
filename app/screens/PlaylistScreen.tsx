@@ -3,10 +3,7 @@ import React from "react";
 import {ImageBackground, SafeAreaView, StyleSheet, Text, TouchableOpacity, View, StatusBar, ScrollView} from "react-native";
 import {Audio, AVPlaybackStatus} from "expo-av";
 
-import { TrackContext } from "../components/TrackContext";
-import MiniPlayer from "../components/MiniPlayer";
-import Soundtrack from "../components/Soundtrack";
-import { QueueInfoContext } from "../components/QueueInfoContext";
+import {TrackContext, MiniPlayer, Soundtrack, QueueInfoContext} from "../components";
 import firebase from "firebase/app";
 
 export default function PlaylistScreen({navigation, route}: any) {

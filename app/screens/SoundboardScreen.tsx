@@ -1,10 +1,8 @@
 import React from "react";
 import {SafeAreaView, ScrollView, StyleSheet, Text, View} from "react-native";
 
-import {QueueInfoContext} from "../components/QueueInfoContext";
-import MiniPlayer from "../components/MiniPlayer";
+import {QueueInfoContext, MiniPlayer, Sound} from "../components";
 import firebase from "firebase/app";
-import Sound from "../components/Sound";
 
 export default function BoardScreen(props: any) {
     const {queueInfo, setQueueInfo} = React.useContext(QueueInfoContext);

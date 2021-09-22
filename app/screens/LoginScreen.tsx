@@ -4,8 +4,7 @@ import { useState } from 'react';
 import {StyleSheet, Text, View, Button as RNButton, Button} from 'react-native';
 
 import {db} from "../constants/Firebase";
-import InputField from "../components/InputField";
-import ErrorMessage from "../components/ErrorMessage";
+import {InputField, ErrorMessage} from "../components";
 
 const auth = db.auth();
 
