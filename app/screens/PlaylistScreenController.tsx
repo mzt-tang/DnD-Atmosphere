@@ -6,7 +6,7 @@ import {Audio, AVPlaybackStatus} from "expo-av";
 import {TrackContext, MiniPlayer, Soundtrack, QueueInfoContext} from "../components";
 import firebase from "firebase/app";
 
-export default function PlaylistScreen({navigation, route}: any) {
+export default function PlaylistScreenController({navigation, route}: any) {
     const {queue, setQueue} = React.useContext(TrackContext);
     const {queueInfo, setQueueInfo} = React.useContext(QueueInfoContext);
     const [soundtracks, setSoundtracks] = React.useState<any[]>([]);
@@ -53,25 +53,46 @@ export default function PlaylistScreen({navigation, route}: any) {
         
     }
 
+    const playlistController = () => {
+        return soundtracks.map(soundtrack =>
+            <Soundtrack title={soundtrack.title} onTrackPress={onTrackPress} key={soundtrack.key} trackObject={soundtrack} playlistObject={route.params}/>);
+    }
+
+    const onNavGoBack = ({navigation}: any) => {
+      return navigation.goBack;
+    }
+
+    const miniplayerController = ({navigation}: any) => {
+        return queueInfo.mpActive && <MiniPlayer navigation={navigation}/>
+    }
+
+    return (
+        <PlaylistScreen
+            route={route}
+            onNavGoBack={onNavGoBack({navigation})}
+            queueInfo={queueInfo} playlistController={playlistController()}
+            miniplayerController={miniplayerController({navigation})}
+        />
+    );
+}
+
+const PlaylistScreen = ({route, onNavGoBack, playlistController, miniplayerController}:any) => {
     return (
         <SafeAreaView style={styles.background}>
-                <ImageBackground source={route.params.imageSource} style={styles.imageHeader}>
-                    <TouchableOpacity style={styles.backButton} onPress={navigation.goBack}>
-                        <AntDesign name="arrowleft" color="white" size={25}/>
-                    </TouchableOpacity>
+            <ImageBackground source={route.params.imageSource} style={styles.imageHeader}>
+                <TouchableOpacity style={styles.backButton} onPress={onNavGoBack}>
+                    <AntDesign name="arrowleft" color="white" size={25}/>
+                </TouchableOpacity>
+                <Text style={styles.subTitle}>Playlist</Text>
+                <Text style={styles.title}>{route.params.playlist}</Text>
+            </ImageBackground>
 
-                    <Text style={styles.subTitle}>Playlist</Text>
-                    <Text style={styles.title}>{route.params.playlist}</Text> 
-                </ImageBackground>
+            <ScrollView>
+                {playlistController}
+            </ScrollView>
 
-                <ScrollView>
-                    {soundtracks.map(soundtrack => 
-                        <Soundtrack title={soundtrack.title} onTrackPress={onTrackPress} key={soundtrack.key} trackObject={soundtrack} playlistObject={route.params}/>
-                    )}
-                </ScrollView>
+            {miniplayerController}
 
-                {queueInfo.mpActive && <MiniPlayer navigation={navigation}/>}
-                
         </SafeAreaView>
     );
 }
@@ -123,8 +144,3 @@ const styles = StyleSheet.create({
         marginLeft: 10,
     },
 })
-
-/*<TouchableOpacity onPress={onTrackPress} style={styles.soundtrack} key={soundtrack.key}>
-    <Text style={styles.trackTitle}>{soundtrack.title}</Text>
-    <Text style={styles.trackArtist}>Artist Name</Text>
-</TouchableOpacity>*/

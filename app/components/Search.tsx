@@ -56,10 +56,10 @@ const Results = connectInfiniteHits(({ hits, hasMore, refineNext }) => {
 const Repository = ({ repo }:any) => (
     <View style={styles.mainContainer}>
         <View style={{ flex: 1 }}>
-            <Text ellipsizeMode="tail" numberOfLines={2}>{repo.playlist}</Text>
+            <Text style={{color: 'white'}} ellipsizeMode="tail" numberOfLines={2}>{repo.playlist}</Text>
         </View>
         <View>
-            <Text>{repo.title}</Text>
+            <Text style={{color: 'white'}}>{repo.title}</Text>
         </View>
     </View>
 );
@@ -80,6 +80,7 @@ const styles = StyleSheet.create({
         alignItems: "center"
     },
     textInput: {
+        color: 'white',
         height: 30,
         fontSize: 24,
         width: 200 - 20

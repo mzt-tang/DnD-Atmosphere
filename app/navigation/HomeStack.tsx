@@ -3,7 +3,7 @@ import {createStackNavigator} from "@react-navigation/stack";
 
 import BottomTabNavigation from "./BottomTabNavigation";
 import SoundboardScreen from "../screens/SoundboardScreen";
-import PlaylistScreen from "../screens/PlaylistScreen";
+import PlaylistScreenController from "../screens/PlaylistScreenController";
 import MusicPlayerScreen from "../screens/MusicPlayerScreen";
 import { LogBox } from 'react-native';
 
@@ -23,7 +23,7 @@ export default function HomeStack() {
                 }
             }}>
             <Stack.Screen name="Default" component={ BottomTabNavigation } options={{headerShown: false}}/>
-            <Stack.Screen name="Playlist" component={PlaylistScreen} options={{headerShown: false}}/>
+            <Stack.Screen name="Playlist" component={PlaylistScreenController} options={{headerShown: false}}/>
             <Stack.Screen name="Soundboard" component={SoundboardScreen}/>
             <Stack.Screen name="MusicPlayer" component={MusicPlayerScreen}/>
         </Stack.Navigator>
