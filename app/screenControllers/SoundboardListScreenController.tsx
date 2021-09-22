@@ -1,24 +1,23 @@
 import React from "react";
+import {MiniPlayer, PlaylistButton, QueueInfoContext} from "../components";
+import firebase from "firebase";
 import {View} from "react-native";
 
-import {QueueInfoContext, MiniPlayer, PlaylistButton} from "../components";
-import firebase from "firebase/app";
-import {LibraryScreen} from "../screens";
+import {SoundboardListScreen} from "../screens";
 
-export default function LibraryScreenController({navigation} : any) {
+export default function SoundboardsScreenController({navigation}: any) {
     const {queueInfo, setQueueInfo} = React.useContext(QueueInfoContext);
-    const [playlists, setPlaylists] = React.useState<any[]>([])
+    const [soundboards, setSoundboards] = React.useState<any[]>([])
 
     React.useEffect(() => {
         loadFromDatabase();
     }, []);
 
     async function loadFromDatabase() {
-        //const playlistsRef = firebase.firestore().collection("soundtrack-categories");
-        const playlistsCollection = await firebase.firestore().collection("soundtrack-categories").get();
+        const playlistsCollection = await firebase.firestore().collection("soundeffect-categories").get();
 
         let i = 0;
-        let tempPlaylists: any[] = [];
+        let tempSoundboards: any[] = [];
         let row: any[] = [];
         playlistsCollection.docs.forEach(doc => {
             const image = doc.data().image;
@@ -30,49 +29,53 @@ export default function LibraryScreenController({navigation} : any) {
                 key: i,
             });
             if (i%2===1) {
-                tempPlaylists.push(row);
+                tempSoundboards.push(row);
                 row = [];
             }
             i++;
         });
         if (row.length > 0) {
-            tempPlaylists.push(row);
+            tempSoundboards.push(row);
         }
 
-        setPlaylists(tempPlaylists);
-        console.log("done loading", playlists);
+        setSoundboards(tempSoundboards);
+        console.log("done loading", soundboards);
 
     }
 
-    const playlistController = ({navigation}: any) => {
-        return playlists.map(row =>
+    function navToSoundboard(){
+        navigation.navigate("Soundboard");
+    }
+
+    const playlistController = ({navigation}:any) => {
+        return soundboards.map(row =>
             <View style={{
                 width: "100%",
                 flexDirection: "row",
                 marginBottom: 10,
-                justifyContent: "flex-start"
-            }} key={"r" + row[0].key}>
-                {row.map((playlist: any) =>
+                justifyContent: "flex-start"}}
+                  key={"r" + row[0].key}>
+                {row.map((soundboard: any) =>
                     <PlaylistButton
-                        source={playlist.source}
-                        title={playlist.title}
+                        source={soundboard.source}
+                        title={soundboard.title}
                         navigation={navigation}
-                        key={playlist.key}
-                        navTo="Playlist"
+                        key={soundboard.key}
+                        navTo="Soundboard"
                     />
                 )}
             </View>
         )
     }
 
-    const miniplayerController = ({navigation}: any) => {
+    const miniplayerController = ({navigation}:any) => {
         return queueInfo.mpActive && <MiniPlayer navigation={navigation}/>
     }
 
     return (
-        <LibraryScreen
+        <SoundboardListScreen
             playlistController={playlistController({navigation})}
             miniplayerController={miniplayerController({navigation})}
         />
-    );
+    )
 }

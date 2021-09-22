@@ -5,7 +5,7 @@ import MusicPlayerScreen from "./MusicPlayerScreen";
 import PlaylistScreen from "./PlaylistScreen";
 import SearchScreen from "./SearchScreen";
 import {SignupScreen} from "./SignupScreen";
-import SoundboardsScreen from "./SoundboardListScreen";
+import {SoundboardListScreen} from "./SoundboardListScreen";
 import BoardScreen from "./SoundboardScreen";
 
 export {
@@ -16,6 +16,6 @@ export {
     PlaylistScreen,
     SearchScreen,
     SignupScreen,
-    SoundboardsScreen,
+    SoundboardListScreen,
     BoardScreen
 };

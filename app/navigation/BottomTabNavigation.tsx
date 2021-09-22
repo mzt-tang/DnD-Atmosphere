@@ -1,13 +1,11 @@
 import React from "react";
-import {StyleSheet} from "react-native";
 
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import HomeScreen from "../screens/HomeScreen";
-import SoundBoardListScreen from "../screens/SoundboardListScreen";
 import SearchScreen from "../screens/SearchScreen";
 import Search from "../components/Search";
 import { MaterialIcons } from "@expo/vector-icons";
-import {LibraryScreenController} from "../screenControllers";
+import {LibraryScreenController, SoundboardsScreenController} from "../screenControllers";
 
 
 const Tab = createBottomTabNavigator();
@@ -39,7 +37,7 @@ export default function BottomTabNavigation() {
                 }}/>
             <Tab.Screen
                 name="Soundboards"
-                component={SoundBoardListScreen}
+                component={SoundboardsScreenController}
                 options={{
                     tabBarIcon: ({color}) => <MaterialIcons name="grid-view" color={color} size={35} />
                 }}/>
