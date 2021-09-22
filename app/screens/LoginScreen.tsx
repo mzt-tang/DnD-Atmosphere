@@ -99,8 +99,6 @@ const styles = StyleSheet.create({
         paddingHorizontal: 12
     },
     title: {
-        flex: 1,
-        width: '100%',
         fontSize: 24,
         fontWeight: '600',
         color: '#fff',

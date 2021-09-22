@@ -21,10 +21,6 @@ export default function HomeScreen({navigation}: any) {
         }
     };
 
-    const navToSettings = () => {
-        navigation.navigate("Settings")
-    }
-
     return (
         <SafeAreaView style={styles.background}>
             <View style={styles.appbar}>
@@ -33,11 +29,11 @@ export default function HomeScreen({navigation}: any) {
                     <Text style={styles.title}>{user.email}!</Text>
                 </View>
 
-                <TouchableOpacity style={styles.logoutButton} onPress={navToSettings}>
+                <TouchableOpacity style={styles.logoutButton} onPress={handleSignOut}>
                     <AntDesign name={"logout"} style={styles.rightIcon} size={40} color="white"/>
                 </TouchableOpacity>
             </View>
-            
+
             <View style={styles.body}>
                 <Text style={styles.heading}>Recently Played</Text>
 
@@ -119,14 +115,14 @@ const styles = StyleSheet.create({
         color: "white",
         fontSize: 20,
         marginTop: 15,
-    }, 
+    },
     imageBg: {
         flex: 1,
         justifyContent: "flex-end",
     },
     image: {
         borderRadius: 20,
-    }, 
+    },
     playlistTitle: {
         color: "white",
         fontSize: 20,

@@ -7,8 +7,6 @@ import {Audio} from "expo-av";
 
 export default function TestScreenMichael({navigation}: any) {
 
-    //////
-
     const [sound, setSound] = React.useState<Audio.Sound>();
 
     async function playSound() {

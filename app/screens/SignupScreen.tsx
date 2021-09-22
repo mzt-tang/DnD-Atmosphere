@@ -1,46 +1,11 @@
 import { StatusBar } from 'expo-status-bar';
 import React from 'react';
-import { useState } from 'react';
 import {StyleSheet, Text, View, Button as RNButton, Button} from 'react-native';
 
 import InputField from "../components/InputField";
-import ErrorMessage from "../components/ErrorMessage";
-import {db} from "../constants/Firebase";
 
-const auth = db.auth();
-
-export default function SignupScreen({ navigation }:any) {
-    const [email, setEmail] = useState('');
-    const [password, setPassword] = useState('');
-    const [passwordVisibility, setPasswordVisibility] = useState(true);
-    const [rightIcon, setRightIcon] = useState('eye');
-    const [signupError, setSignupError] = useState('');
-
-    const handlePasswordVisibility = () => {
-        if (rightIcon === 'eye') {
-            setRightIcon('eye-off');
-            setPasswordVisibility(!passwordVisibility);
-        } else if (rightIcon === 'eye-off') {
-            setRightIcon('eye');
-            setPasswordVisibility(!passwordVisibility);
-        }
-    };
-
-    const onHandleSignup = async () => {
-        try {
-            if (email !== '' && password !== '') {
-                await auth.createUserWithEmailAndPassword(email, password).then(cred => {
-                    return db.firestore().collection('users').doc(cred.user?.uid).set({
-                        recentlyPlayedSoundtracks: ["Tavern", "Battle", "Others"], //todo add initial data here.
-                        recentlyPlayedSoundEffects: ["Tavern", "Battle", "Others"],
-                    })
-                });
-            }
-        } catch (error) {
-            setSignupError(error.message);
-        }
-    };
-
+export const SignupScreen = ({email, setEmail, passwordVisibility, rightIcon, password, setPassword,
+                          handlePasswordVisibility, onHandleSignupError, onHandleSignup, navigateToLogin}: any) => {
     return (
         <View style={styles.container}>
             <StatusBar style='dark' />
@@ -81,20 +46,21 @@ export default function SignupScreen({ navigation }:any) {
                 onChangeText={(text: React.SetStateAction<string>) => setPassword(text)}
                 handlePasswordVisibility={handlePasswordVisibility}
             />
-            {signupError ? <ErrorMessage error={signupError} visible={true} /> : null}
+            {onHandleSignupError}
             <Button
                 onPress={onHandleSignup}
                 color='#f57c00'
                 title='Signup'
             />
             <RNButton
-                onPress={() => navigation.navigate('Login')}
+                onPress={navigateToLogin}
                 title='Go to Login'
                 color='#77ab12'
             />
         </View>
     );
 }
+
 
 const styles = StyleSheet.create({
     container: {
