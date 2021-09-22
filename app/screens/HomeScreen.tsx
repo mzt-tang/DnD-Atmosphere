@@ -6,8 +6,8 @@ import {QueueInfoContext} from "../components/QueueInfoContext";
 import MiniPlayer from "../components/MiniPlayer";
 import {db} from "../constants/Firebase";
 import {AuthenticatedUserContext} from "../navigation/AuthenticatedUserProvider";
-import {Card, colors} from "react-native-elements";
-import {Ionicons, MaterialCommunityIcons} from "@expo/vector-icons";
+import {Card} from "react-native-elements";
+import {Ionicons} from "@expo/vector-icons";
 
 const auth = db.auth();
 
@@ -29,9 +29,9 @@ export default function HomeScreen({navigation}: any) {
     return (
         <SafeAreaView style={styles.background}>
             <View style={styles.appbar}>
-                <View>
-                    <Text style={styles.title}>Welcome</Text>
-                    <Text>{user.email}!</Text>
+                <View style={{flex: 1}}>
+                    <Text style={styles.welcome}>Welcome</Text>
+                    <Text style={styles.title}>{user.email}!</Text>
                 </View>
                 {/*<Button title={"Go to settings"} onPress={navToSettings}/>*/}
                 {/*<Button title={"Log out"} onPress={handleSignOut}/>*/}
@@ -79,11 +79,19 @@ const styles = StyleSheet.create({
         fontSize: 24,
         fontWeight: '600',
         color: '#fff',
-        alignSelf: 'center',
-        paddingBottom: 24
+        alignSelf: 'flex-start',
+        paddingLeft: 24
+    },
+    welcome: {
+        flex: 1,
+        fontSize: 24,
+        fontWeight: '600',
+        color: '#fff',
+        alignSelf: 'flex-start',
+        paddingLeft: 24
     },
     rightIcon: {
         alignSelf: 'center',
-        marginLeft: 10
+        marginRight: 24
     },
 })

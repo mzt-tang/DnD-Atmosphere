@@ -13,7 +13,6 @@ export default function LibraryScreen({navigation} : any) {
     const [playlists, setPlaylists] = React.useState<any[]>([])
 
     React.useEffect(() => {
-        
         loadFromDatabase();
     }, []);
 

@@ -31,8 +31,8 @@ export default function SignupScreen({ navigation }:any) {
             if (email !== '' && password !== '') {
                 await auth.createUserWithEmailAndPassword(email, password).then(cred => {
                     return db.firestore().collection('users').doc(cred.user?.uid).set({
-                        recentlyPlayedSoundtracks: [], //todo add initial data here.
-                        recentlyPlayedSoundEffects: [],
+                        recentlyPlayedSoundtracks: ["Tavern", "Battle", "Others"], //todo add initial data here.
+                        recentlyPlayedSoundEffects: ["Tavern", "Battle", "Others"],
                     })
                 });
             }
