@@ -56,12 +56,7 @@ const Results = connectInfiniteHits(({ hits, hasMore, refineNext }) => {
 const Repository = ({ repo }:any) => (
     <View style={styles.mainContainer}>
         <View style={{ flex: 1 }}>
-            <Text
-                ellipsizeMode="tail"
-                numberOfLines={2}
-            >
-                {repo.playlist}
-            </Text>
+            <Text ellipsizeMode="tail" numberOfLines={2}>{repo.playlist}</Text>
         </View>
         <View>
             <Text>{repo.title}</Text>

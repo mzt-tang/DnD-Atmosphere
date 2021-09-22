@@ -52,13 +52,6 @@ export default function LibraryScreen({navigation} : any) {
         <SafeAreaView style={styles.background}>
             <View style={styles.container}>
                 <Text style={styles.heading}>Soundtracks</Text>
-
-                <View style={styles.searchBar}>
-                    <TextInput
-                        placeholder="Search..."
-                    />
-                </View>
-
                 <ScrollView style={styles.scroll}>
                     {playlists.map(row => 
 
@@ -105,12 +98,6 @@ const styles = StyleSheet.create({
         flexDirection: "row",
         marginBottom: 10,
         justifyContent: "flex-start", //Center is better for different screen sizes but looks weird for odd numbers of playlists
-    },
-    searchBar: {
-        backgroundColor: "white",
-        marginBottom: 35,
-        borderRadius: 10,
-        paddingLeft: 5,
     },
     scroll: {
         //backgroundColor: "yellow",

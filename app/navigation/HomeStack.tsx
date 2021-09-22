@@ -7,10 +7,14 @@ import SettingScreen from "../screens/SettingScreen";
 import SoundboardScreen from "../screens/SoundboardScreen";
 import PlaylistScreen from "../screens/PlaylistScreen";
 import MusicPlayerScreen from "../screens/MusicPlayerScreen";
+import { LogBox } from 'react-native';
 
 const Stack = createStackNavigator();
 
 export default function HomeStack() {
+
+    LogBox.ignoreLogs(['Setting a timer']);
+
     return (
         <Stack.Navigator screenOptions={{
                 headerTintColor: "#F4963F",

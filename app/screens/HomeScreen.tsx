@@ -6,6 +6,8 @@ import {QueueInfoContext} from "../components/QueueInfoContext";
 import MiniPlayer from "../components/MiniPlayer";
 import {db} from "../constants/Firebase";
 import {AuthenticatedUserContext} from "../navigation/AuthenticatedUserProvider";
+import {Card, colors} from "react-native-elements";
+import {Ionicons, MaterialCommunityIcons} from "@expo/vector-icons";
 
 const auth = db.auth();
 
@@ -26,13 +28,26 @@ export default function HomeScreen({navigation}: any) {
 
     return (
         <SafeAreaView style={styles.background}>
-            <StatusBar style='dark'/>
-            <View style={styles.container}>
-                <Text>Welcome {user.email}!</Text>
-                <Button title={"Go to settings"} onPress={navToSettings}/>
-                <Button title={"Log out"} onPress={handleSignOut}/>
+            <View style={styles.appbar}>
+                <View>
+                    <Text style={styles.title}>Welcome</Text>
+                    <Text>{user.email}!</Text>
+                </View>
+                {/*<Button title={"Go to settings"} onPress={navToSettings}/>*/}
+                {/*<Button title={"Log out"} onPress={handleSignOut}/>*/}
+                <Ionicons name={"settings-sharp"} style={styles.rightIcon}/>
             </View>
-            <Text>Your UID is: {user.uid}</Text>
+            <View style={styles.container}>
+                <Card containerStyle={styles.container1}>
+
+                </Card>
+            </View>
+            <View style={styles.container}>
+                <Card containerStyle={styles.container2}>
+
+                </Card>
+            </View>
+            <Text style={{color: '#fff'}}>Your UID is: {user.uid}</Text>
             {queueInfo.mpActive && <MiniPlayer navigation={navigation}/>}
         </SafeAreaView>
     );
@@ -43,8 +58,32 @@ const styles = StyleSheet.create({
         flex: 1,
         backgroundColor: "#121212",
     },
-    container: {
+    appbar: {
         flex: 1,
+        backgroundColor: 'green',
         flexDirection: "row",
+    },
+    container: {
+        flex: 2,
+    },
+    container1: {
+        flex: 1,
+        backgroundColor: 'pink',
+    },
+    container2: {
+        flex: 1,
+        backgroundColor: 'yellow',
+    },
+    title: {
+        flex: 1,
+        fontSize: 24,
+        fontWeight: '600',
+        color: '#fff',
+        alignSelf: 'center',
+        paddingBottom: 24
+    },
+    rightIcon: {
+        alignSelf: 'center',
+        marginLeft: 10
     },
 })

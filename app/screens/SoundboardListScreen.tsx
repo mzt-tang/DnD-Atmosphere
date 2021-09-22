@@ -70,12 +70,6 @@ export default function SoundboardsScreen({navigation}: any) {
             <View style={styles.container}>
                 <Text style={styles.heading}>Soundboards</Text>
 
-                <View style={styles.searchBar}>
-                    <TextInput
-                        placeholder="Search..."
-                    />
-                </View>
-
                 <ScrollView style={styles.scroll}>
                     {soundboards.map(row => 
 

@@ -4,8 +4,7 @@ import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import LibraryScreen from "../screens/LibraryScreen";
 import HomeScreen from "../screens/HomeScreen";
 import SoundBoardListScreen from "../screens/SoundboardListScreen";
-import TestScreenMichael from "../screens/TestScreenMichael"
-import Search from "../components/Search";
+import SearchScreen from "../screens/SearchScreen";
 
 
 const Tab = createBottomTabNavigator();
@@ -18,9 +17,9 @@ export default function BottomTabNavigation() {
     return (
         <Tab.Navigator initialRouteName={"Home"}>
             <Tab.Screen name="Home" component={HomeScreen}/>
+            <Tab.Screen name="Search" component={SearchScreen} />
             <Tab.Screen name="Library" component={LibraryScreen} />
             <Tab.Screen name="Soundboards" component={SoundBoardListScreen} />
-            <Tab.Screen name={"TestScreen"} component={Search} />
         </Tab.Navigator>
 );
 }

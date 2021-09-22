@@ -29,7 +29,12 @@ export default function SignupScreen({ navigation }:any) {
     const onHandleSignup = async () => {
         try {
             if (email !== '' && password !== '') {
-                await auth.createUserWithEmailAndPassword(email, password);
+                await auth.createUserWithEmailAndPassword(email, password).then(cred => {
+                    return db.firestore().collection('users').doc(cred.user?.uid).set({
+                        recentlyPlayedSoundtracks: [], //todo add initial data here.
+                        recentlyPlayedSoundEffects: [],
+                    })
+                });
             }
         } catch (error) {
             setSignupError(error.message);
