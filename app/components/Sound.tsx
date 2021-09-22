@@ -18,7 +18,9 @@ export default function Sound(props : any) {
         const { sound , status} = await Audio.Sound.createAsync({uri: props.audioSource});
 
         setSound(sound);
-        setDuration(status.durationMillis);
+        if (status.isLoaded) {
+            setDuration(status.durationMillis as number);
+        }
     }
 
 
@@ -34,7 +36,7 @@ export default function Sound(props : any) {
               console.log('Unloading Sound');
               sound.unloadAsync(); }
           : undefined;
-      }, [sound]);
+      }, []);
 
     function millisToTimestamp(millis : number) {
         const date = new Date(millis);

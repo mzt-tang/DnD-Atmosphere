@@ -4,8 +4,7 @@ import {Button, SafeAreaView, StyleSheet, Text, TouchableOpacity, Image, View} f
 import {Audio} from "expo-av";
 import { useFocusEffect } from "@react-navigation/native";
 
-import {TrackContext} from "../components/TrackContext"
-import {QueueInfoContext} from "../components/QueueInfoContext";
+import {TrackContext, QueueInfoContext} from "../components"
 
 export default function MiniPlayer(props: any) {
     const {queue, setQueue} = React.useContext(TrackContext);
@@ -14,12 +13,13 @@ export default function MiniPlayer(props: any) {
     const [playing, setPlaying] = React.useState<boolean>(false);
 
     useFocusEffect(() => {
-        async function updatePlaying(){
-            const status = await queue[queueInfo.queuePos]?.getStatusAsync();
-            setPlaying(status.isPlaying);
-        }
         updatePlaying();
     });
+
+    async function updatePlaying(){
+        const status = await queue[queueInfo.queuePos]?.getStatusAsync();
+        setPlaying(status.isPlaying);
+    }
 
     function navToMusicPlayer(){
         //console.log("props", props);

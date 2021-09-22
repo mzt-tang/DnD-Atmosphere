@@ -1,7 +1,7 @@
 import ErrorMessage from "./ErrorMessage";
 import InputField from "./InputField";
 import MiniPlayer from "./MiniPlayer";
-import Playlist from "./Playlist";
+import PlaylistButton from "./PlaylistButton";
 import {QueueInfoContext} from "./QueueInfoContext";
 import Search from "./Search";
 import Sound from "./Sound";
@@ -12,7 +12,7 @@ export {
     ErrorMessage,
     InputField,
     MiniPlayer,
-    Playlist,
+    PlaylistButton,
     QueueInfoContext,
     Search,
     Sound,

@@ -2,12 +2,12 @@ import React from "react";
 import {StyleSheet} from "react-native";
 
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import LibraryScreen from "../screens/LibraryScreen";
 import HomeScreen from "../screens/HomeScreen";
 import SoundBoardListScreen from "../screens/SoundboardListScreen";
 import SearchScreen from "../screens/SearchScreen";
 import Search from "../components/Search";
 import { MaterialIcons } from "@expo/vector-icons";
+import {LibraryScreenController} from "../screenControllers";
 
 
 const Tab = createBottomTabNavigator();
@@ -33,7 +33,7 @@ export default function BottomTabNavigation() {
                 }}/>
             <Tab.Screen
                 name="Soundtracks"
-                component={LibraryScreen}
+                component={LibraryScreenController}
                 options={{
                     tabBarIcon: ({color}) => <MaterialIcons name="library-music" color={color} size={35} />
                 }}/>

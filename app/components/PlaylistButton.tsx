@@ -1,7 +1,7 @@
 import React from "react";
 import {Button, SafeAreaView, StyleSheet, View, TouchableOpacity, ImageBackground, Text} from "react-native";
 
-export default function Playlist(props: any) {
+export default function PlaylistButton(props: any) {
 
     function navToPlayList(){
         props.navigation.navigate(props.navTo, {playlist: props.title, imageSource: props.source});

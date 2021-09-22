@@ -2,7 +2,7 @@ import React from "react";
 import {SafeAreaView, ScrollView, StyleSheet, Text, View} from "react-native";
 import {SearchBar} from "react-native-elements"
 
-import {QueueInfoContext, MiniPlayer, Playlist} from "../components";
+import {QueueInfoContext, MiniPlayer, PlaylistButton} from "../components";
 import firebase from "firebase/app";
 
 export default function SoundboardsScreen({navigation}: any) {
@@ -74,7 +74,7 @@ export default function SoundboardsScreen({navigation}: any) {
                         <View style={styles.row} key={"r" + row[0].key}>
                             {row.map((soundboard: any) => 
 
-                                <Playlist 
+                                <PlaylistButton
                                     source={soundboard.source} 
                                     title={soundboard.title} 
                                     navigation={navigation} 
