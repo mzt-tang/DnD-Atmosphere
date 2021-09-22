@@ -8,33 +8,8 @@ import {InputField, ErrorMessage} from "../components";
 
 const auth = db.auth();
 
-export default function LoginScreen({ navigation }:any) {
-    const [email, setEmail] = useState('');
-    const [password, setPassword] = useState('');
-    const [passwordVisibility, setPasswordVisibility] = useState(true);
-    const [rightIcon, setRightIcon] = useState('eye');
-    const [loginError, setLoginError] = useState('');
-
-    const handlePasswordVisibility = () => {
-        if (rightIcon === 'eye') {
-            setRightIcon('eye-off');
-            setPasswordVisibility(!passwordVisibility);
-        } else if (rightIcon === 'eye-off') {
-            setRightIcon('eye');
-            setPasswordVisibility(!passwordVisibility);
-        }
-    };
-
-    const onLogin = async () => {
-        try {
-            if (email !== '' && password !== '') {
-                await auth.signInWithEmailAndPassword(email, password);
-            }
-        } catch (error) {
-            setLoginError(error.message);
-        }
-    };
-
+export const LoginScreen = ({email, setEmail, passwordVisibility, rightIcon, password, setPassword,
+                                handlePasswordVisibility, handleOnLoginError, onLogin, navigateToSignup}:any) => {
     return (
         <View style={styles.container}>
             <StatusBar style='dark' />
@@ -75,14 +50,14 @@ export default function LoginScreen({ navigation }:any) {
                 onChangeText={(text: React.SetStateAction<string>) => setPassword(text)}
                 handlePasswordVisibility={handlePasswordVisibility}
             />
-            {loginError ? <ErrorMessage error={loginError} visible={true} /> : null}
+            {handleOnLoginError}
             <Button
                 onPress={onLogin}
                 color='#f57c00'
                 title='Login'
             />
             <RNButton
-                onPress={() => navigation.navigate('Signup')}
+                onPress={navigateToSignup}
                 color='#77ab12'
                 title='Go to Signup'
             />

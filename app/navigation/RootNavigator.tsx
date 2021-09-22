@@ -6,8 +6,7 @@ import {db} from '../constants/Firebase';
 import { AuthenticatedUserContext } from './AuthenticatedUserProvider';
 import AuthenticationStack from "./AuthenticationStack";
 import HomeStack from "./HomeStack";
-import {TrackContext} from "../components/TrackContext";
-import {QueueInfoContext} from "../components/QueueInfoContext";
+import {QueueInfoContext, TrackContext} from "../components";
 
 const auth = db.auth();
 

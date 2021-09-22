@@ -50,15 +50,16 @@ export default function SignupScreenController({ navigation }:any) {
         return signupError ? <ErrorMessage error={signupError} visible={true} /> : null;
     }
 
-    return <SignupScreen email={email}
-                         setEmail={setEmail}
-                         passwordVisibility={passwordVisibility}
-                         rightIcon={rightIcon}
-                         password={password}
-                         setPassword={setPassword}
-                         handlePasswordVisibility={handlePasswordVisibility}
-                         onHandleSignupError={onHandleSignupError()}
-                         onHandleSignup={onHandleSignup}
-                         navigateToLogin={navigateToLogin}
+    return <SignupScreen
+        email={email}
+        setEmail={setEmail}
+        passwordVisibility={passwordVisibility}
+        rightIcon={rightIcon}
+        password={password}
+        setPassword={setPassword}
+        handlePasswordVisibility={handlePasswordVisibility}
+        onHandleSignupError={onHandleSignupError()}
+        onHandleSignup={onHandleSignup}
+        navigateToLogin={navigateToLogin}
     />
 }
