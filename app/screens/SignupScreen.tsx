@@ -65,7 +65,7 @@ export const SignupScreen = ({email, setEmail, passwordVisibility, rightIcon, pa
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        backgroundColor: '#e93b81',
+        backgroundColor: '#121212',
         paddingTop: 50,
         paddingHorizontal: 12
     },

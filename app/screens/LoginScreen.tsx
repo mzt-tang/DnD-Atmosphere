@@ -1,12 +1,8 @@
 import { StatusBar } from 'expo-status-bar';
 import React from 'react';
-import { useState } from 'react';
 import {StyleSheet, Text, View, Button as RNButton, Button} from 'react-native';
 
-import {db} from "../constants/Firebase";
-import {InputField, ErrorMessage} from "../components";
-
-const auth = db.auth();
+import {InputField} from "../components";
 
 export const LoginScreen = ({email, setEmail, passwordVisibility, rightIcon, password, setPassword,
                                 handlePasswordVisibility, handleOnLoginError, onLogin, navigateToSignup}:any) => {
@@ -68,7 +64,7 @@ export const LoginScreen = ({email, setEmail, passwordVisibility, rightIcon, pas
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        backgroundColor: '#e93b81',
+        backgroundColor: '#121212',
         paddingTop: 50,
         paddingHorizontal: 12
     },
