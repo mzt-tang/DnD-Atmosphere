@@ -1,79 +1,9 @@
 import { MaterialIcons } from "@expo/vector-icons";
 import React, { useRef } from "react";
 import {Button, Image, SafeAreaView, StyleSheet, Text, TouchableOpacity, View} from "react-native";
-import {Audio, AVPlaybackStatus} from "expo-av";
 import { Slider } from 'react-native-elements';
 
-import { TrackContext, QueueInfoContext } from "../components";
-
-
-export default function MusicPlayerScreen({route}: any) {
-    const [sound, setSound] = React.useState<Audio.Sound>();
-    const [playing, setPlaying] = React.useState<boolean>(false);
-    const [position, setPosition] = React.useState<number>(0);
-    const [duration, setDuration] = React.useState<number>(0);
-    const {queue, setQueue} = React.useContext(TrackContext);
-    const {queueInfo, setQueueInfo} = React.useContext(QueueInfoContext);
-
-    React.useEffect(() => {
-        loadSound();
-    }, []);
-
-    async function loadSound() {
-        const soundObject = queue[queueInfo.queuePos];
-        console.log("queue?: ", queue!==undefined);
-        setSound(soundObject);
-
-        soundObject.setOnPlaybackStatusUpdate(onPlaybackStatusChanged);
-        const status = await soundObject.getStatusAsync();
-        if (status.isLoaded) {
-            setPlaying(status.isPlaying);
-            setDuration(status.durationMillis);
-            console.log("duration = ", status.durationMillis);
-        }
-    }
-
-    function playSound() {
-        console.log('Playing Soundtrack');
-        console.log(sound !== undefined);
-
-        if (!playing){
-            sound?.setStatusAsync({shouldPlay: true});
-            setPlaying(true);
-        } else {
-            sound?.setStatusAsync({shouldPlay: false});
-            setPlaying(false);
-        }
-    }
-
-    function onPlaybackStatusChanged(playbackStatus: AVPlaybackStatus){
-        //console.log(playbackStatus);
-        if (playbackStatus.isLoaded){
-            setPosition(playbackStatus.positionMillis);
-        }
-    }
-
-    function millisToTimestamp(millis : number) {
-        const date = new Date(millis);
-        let seconds = "" + date.getSeconds();
-        if (date.getSeconds() < 10) {
-            seconds = "0" + seconds;
-        }
-        return date.getMinutes() + ":" + seconds;
-    }
-
-    //Unloads the sound
-    React.useEffect(() => {
-        return sound
-          ? () => {
-              console.log('Removing listener');
-              sound?.setOnPlaybackStatusUpdate(null);
-            }
-          : undefined;
-      }, []);
-    
-    
-
+export const MusicPlayerScreen = ({queueInfo, position, duration, millisToTimestamp, playSound, playing}:any) => {
     return (
         <SafeAreaView style={styles.background}>
             <Text style={styles.subHeading}>Playing from</Text>
@@ -85,14 +15,14 @@ export default function MusicPlayerScreen({route}: any) {
             <Text style={styles.artist}>Soundtrack Artist</Text>
 
             <View style={styles.seekBox}>
-                <Slider 
-                    value={position} 
+                <Slider
+                    value={position}
                     maximumValue={duration}
-                    thumbStyle={styles.sliderThumb} trackStyle={styles.sliderTrack} 
+                    thumbStyle={styles.sliderThumb} trackStyle={styles.sliderTrack}
                     minimumTrackTintColor="#F4963F"/>
-                
+
                 <Text style={styles.currentTime}>{millisToTimestamp(position)}</Text>
-                <Text style={styles.endTime}>{millisToTimestamp(duration)}</Text> 
+                <Text style={styles.endTime}>{millisToTimestamp(duration)}</Text>
             </View>
 
             <View style={styles.icons}>
@@ -103,7 +33,7 @@ export default function MusicPlayerScreen({route}: any) {
                     <MaterialIcons name="skip-previous" color="#F4963F" size={60}/>
                 </TouchableOpacity>
                 <TouchableOpacity onPress={playSound}>
-                    <MaterialIcons name={playing? "pause-circle-outline" : "play-circle-outline"} color="#F4963F" size={60}/>    
+                    <MaterialIcons name={playing? "pause-circle-outline" : "play-circle-outline"} color="#F4963F" size={60}/>
                 </TouchableOpacity>
                 <TouchableOpacity>
                     <MaterialIcons name="skip-next" color="#F4963F" size={60}/>
