@@ -1,12 +1,28 @@
 import React from "react";
 import {Button, SafeAreaView, StyleSheet, View, TouchableOpacity, ImageBackground, Text} from "react-native";
 
-export const Soundtrack = (props: any) => {
+export const Soundtrack = ({onTrackPress,
+                               title,
+                               trackObject,
+                               playlistObject,
+                               queue,
+                               queueInfo,
+                               setQueue,
+                               setQueueInfo,
+                               navigation}: any) => {
 
 
     return (
-        <TouchableOpacity onPress={() => props.onTrackPress(props.trackObject, props.playlistObject)} style={styles.soundtrack}>
-            <Text style={styles.trackTitle}>{props.title}</Text>
+        <TouchableOpacity onPress={() => onTrackPress(
+            trackObject,
+            playlistObject,
+            queue,
+            queueInfo,
+            setQueue,
+            setQueueInfo,
+            navigation
+        )} style={styles.soundtrack}>
+            <Text style={styles.trackTitle}>{title}</Text>
             <Text style={styles.trackArtist}>Artist Name</Text>
         </TouchableOpacity>
     );

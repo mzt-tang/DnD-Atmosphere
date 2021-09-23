@@ -1,6 +1,6 @@
 import { AntDesign } from "@expo/vector-icons";
 import React from "react";
-import {ImageBackground, SafeAreaView, StyleSheet, Text, TouchableOpacity, View, StatusBar, ScrollView} from "react-native";
+import {ImageBackground, SafeAreaView, StyleSheet, Text, TouchableOpacity, StatusBar, ScrollView} from "react-native";
 
 export const PlaylistScreen = ({route, onNavGoBack, playlistController, miniplayerController}:any) => {
     return (
