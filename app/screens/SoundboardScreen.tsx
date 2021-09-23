@@ -1,59 +1,19 @@
 import React from "react";
 import {SafeAreaView, ScrollView, StyleSheet, Text, View} from "react-native";
 
-import {QueueInfoContext, MiniPlayer, Sound} from "../components";
-import firebase from "firebase/app";
-
-export default function BoardScreen(props: any) {
-    const {queueInfo, setQueueInfo} = React.useContext(QueueInfoContext);
-    const [sounds, setSounds] = React.useState<any[]>([]);
-
-    React.useEffect(() => {
-        loadSoundtrackData();
-    }, []);
-
-    async function loadSoundtrackData() {
-        const soundtrackCollection = await firebase.firestore().collection("soundeffect-categories").doc(props.route.params.playlist).get();
-        const effects = await soundtrackCollection.data()?.effects;
-
-        let tempSounds: any[] = [];
-        let row = [];
-        let i = 0;
-        for (let i = 0; i < effects.length; i++){
-            let track = await effects[i].get();
-            track = track.data();
-            track = {...track, key: i};
-            row.push(track);
-            if (i%3 === 2 || i === effects.length-1) { 
-                tempSounds.push(row);
-                row = [];
-            }
-        } 
-
-        console.log("Done loading");
-        setSounds(tempSounds);
-    }
-
+export const BoardScreen = ({route, playlistController, miniplayerController}:any) => {
     return (
         <SafeAreaView style={styles.background}>
             <View style={styles.container}>
-                <Text style={styles.heading}>{props.route.params.playlist}</Text>
+                <Text style={styles.heading}>{route.params.playlist}</Text>
                 <Text style={styles.subHeading}>Soundboard</Text>
 
                 <ScrollView>
-                    {sounds.map(row => 
-
-                        <View style={styles.row} key={"r" + row[0].key}>
-                            {row.map((sound: any) => 
-
-                                <Sound title={sound.title} key={sound.key} audioSource={sound.link}/>
-                            )}
-                        </View>
-                    )}
+                    {playlistController}
                 </ScrollView>
-            </View> 
+            </View>
 
-            {queueInfo.mpActive && <MiniPlayer navigation={props.navigation}/>}
+            {miniplayerController}
 
         </SafeAreaView>
     );
@@ -103,11 +63,5 @@ const styles = StyleSheet.create({
         marginTop: 3,
         alignSelf: "center",
 
-    },
-    row: {
-        width: "100%",
-        flexDirection: "row",
-        marginBottom: 20,
-        justifyContent: "flex-start",
     },
 })

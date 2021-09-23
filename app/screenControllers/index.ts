@@ -3,7 +3,8 @@ import LoginScreenController from "./LoginScreenController";
 import LibraryScreenController from "./LibraryScreenController"
 import SoundboardsScreenController from "./SoundboardListScreenController"
 import PlaylistScreenController from "./PlaylistScreenController";
-import MusicPlayerScreenController from "./MusicPlayerScreenController";
+import MusicPlayerScreenController from "./MusicPlayerScreenController"
+import BoardScreenController from "./BoardScreenController";
 
 export {
     SignupScreenController,
@@ -12,4 +13,5 @@ export {
     SoundboardsScreenController,
     PlaylistScreenController,
     MusicPlayerScreenController,
+    BoardScreenController,
 }

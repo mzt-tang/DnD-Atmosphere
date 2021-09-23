@@ -1,10 +1,11 @@
 import { MaterialIcons } from "@expo/vector-icons";
 import React from "react";
-import {Button, SafeAreaView, StyleSheet, Text, TouchableOpacity, Image, View} from "react-native";
-import {Audio} from "expo-av";
+import {SafeAreaView, StyleSheet, Text, TouchableOpacity, Image, View} from "react-native";
 import { useFocusEffect } from "@react-navigation/native";
 
-import {TrackContext, QueueInfoContext} from "../components"
+//Importing individually to prevent recycling warning/error.
+import {TrackContext} from "./TrackContext";
+import {QueueInfoContext} from "./QueueInfoContext";
 
 export default function MiniPlayer(props: any) {
     const {queue, setQueue} = React.useContext(TrackContext);
