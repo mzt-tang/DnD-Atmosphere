@@ -4,11 +4,11 @@ import {View} from "react-native";
 import {MiniPlayer, PlaylistButton} from "../components";
 import firebase from "firebase/app";
 import {LibraryScreen} from "../screens";
-import {QueueInfoContext} from "../constants";
+import {QueueInfoContext, PlaylistContext} from "../constants";
 
 export default function LibraryScreenController({navigation} : any) {
     const {queueInfo, setQueueInfo} = React.useContext(QueueInfoContext);
-    const [playlists, setPlaylists] = React.useState<any[]>([])
+    const {playlists, setPlaylists} = React.useContext(PlaylistContext);
 
     React.useEffect(() => {
         loadFromDatabase();
@@ -44,7 +44,7 @@ export default function LibraryScreenController({navigation} : any) {
     }
 
     const playlistController = ({navigation}: any) => {
-        return playlists.map(row =>
+        return playlists.map((row: any[]) =>
             <View style={{
                 width: "100%",
                 flexDirection: "row",
