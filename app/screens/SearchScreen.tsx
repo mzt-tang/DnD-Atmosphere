@@ -1,5 +1,5 @@
 import React from "react";
-import {SafeAreaView, StatusBar, StyleSheet, Text, TouchableOpacity, View} from "react-native";
+import {SafeAreaView, StatusBar, StyleSheet, Text, View} from "react-native";
 import {Search} from "../components";
 
 export default function SearchScreen() {

@@ -2,8 +2,9 @@ import React from "react";
 import firebase from "firebase";
 import {View} from "react-native";
 
-import {MiniPlayer, QueueInfoContext, Sound} from "../components";
+import {MiniPlayer, Sound} from "../components";
 import {BoardScreen} from "../screens";
+import {QueueInfoContext} from "../constants";
 
 export default function BoardScreenController({route, navigation}: any) {
     const {queueInfo, setQueueInfo} = React.useContext(QueueInfoContext);

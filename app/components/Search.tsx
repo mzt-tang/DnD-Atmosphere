@@ -1,5 +1,5 @@
 import React from "react";
-import {View, StyleSheet, Image, TextInput, FlatList, Text} from "react-native";
+import {View, StyleSheet, TextInput, FlatList, Text} from "react-native";
 
 import {InstantSearch, connectSearchBox, connectInfiniteHits} from 'react-instantsearch-native';
 import algoliasearch from "algoliasearch";

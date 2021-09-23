@@ -1,7 +1,7 @@
 import React from "react";
 import {Audio, AVPlaybackStatus} from "expo-av";
 
-import {QueueInfoContext, TrackContext} from "../components";
+import {QueueInfoContext, TrackContext} from "../constants";
 import {MusicPlayerScreen} from "../screens";
 
 export default function MusicPlayerScreenController({route}: any) {

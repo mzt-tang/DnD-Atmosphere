@@ -1,11 +1,8 @@
-import { StatusBar } from 'expo-status-bar';
 import React from 'react';
 import { useState } from 'react';
-import {StyleSheet, Text, View, Button as RNButton, Button} from 'react-native';
 
-import InputField from "../components/InputField";
 import ErrorMessage from "../components/ErrorMessage";
-import {db} from "../constants/Firebase";
+import {db} from "../constants";
 import {SignupScreen} from "../screens";
 
 const auth = db.auth();

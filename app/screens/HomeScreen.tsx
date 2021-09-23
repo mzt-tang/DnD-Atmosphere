@@ -1,8 +1,8 @@
 import React from "react";
-import {Button, SafeAreaView, StyleSheet, Text, View, TouchableOpacity, StatusBar, ImageBackground} from "react-native";
+import {SafeAreaView, StyleSheet, Text, View, TouchableOpacity, StatusBar, ImageBackground} from "react-native";
 
-import {QueueInfoContext, MiniPlayer} from "../components";
-import {db} from "../constants/Firebase";
+import {MiniPlayer} from "../components";
+import {db, QueueInfoContext} from "../constants";
 import {AuthenticatedUserContext} from "../navigation/AuthenticatedUserProvider";
 import {AntDesign} from "@expo/vector-icons";
 

@@ -1,6 +1,6 @@
 import { MaterialIcons } from "@expo/vector-icons";
-import React, { useRef } from "react";
-import {Button, Image, SafeAreaView, StyleSheet, Text, TouchableOpacity, View} from "react-native";
+import React from "react";
+import {Image, SafeAreaView, StyleSheet, Text, TouchableOpacity, View} from "react-native";
 import { Slider } from 'react-native-elements';
 
 export const MusicPlayerScreen = ({queueInfo, position, duration, millisToTimestamp, playSound, playing}:any) => {

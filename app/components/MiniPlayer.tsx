@@ -3,9 +3,7 @@ import React from "react";
 import {SafeAreaView, StyleSheet, Text, TouchableOpacity, Image, View} from "react-native";
 import { useFocusEffect } from "@react-navigation/native";
 
-//Importing individually to prevent recycling warning/error.
-import {TrackContext} from "./TrackContext";
-import {QueueInfoContext} from "./QueueInfoContext";
+import {TrackContext, QueueInfoContext} from "../constants";
 
 export default function MiniPlayer(props: any) {
     const {queue, setQueue} = React.useContext(TrackContext);

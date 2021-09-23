@@ -1,5 +1,5 @@
 import React from "react";
-import {Button, SafeAreaView, StyleSheet, View, TouchableOpacity, ImageBackground, Text} from "react-native";
+import {StyleSheet, TouchableOpacity, Text} from "react-native";
 
 export const Soundtrack = ({onTrackPress,
                                title,

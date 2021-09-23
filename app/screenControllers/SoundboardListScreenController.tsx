@@ -1,9 +1,10 @@
 import React from "react";
-import {MiniPlayer, PlaylistButton, QueueInfoContext} from "../components";
 import firebase from "firebase";
 import {View} from "react-native";
 
 import {SoundboardListScreen} from "../screens";
+import {QueueInfoContext} from "../constants";
+import {MiniPlayer, PlaylistButton, } from "../components";
 
 export default function SoundboardsScreenController({navigation}: any) {
     const {queueInfo, setQueueInfo} = React.useContext(QueueInfoContext);

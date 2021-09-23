@@ -1,5 +1,5 @@
 import React from "react";
-import {Button, SafeAreaView, StyleSheet, View, TouchableOpacity, ImageBackground, Text} from "react-native";
+import {StyleSheet, TouchableOpacity, ImageBackground, Text} from "react-native";
 
 export default function PlaylistButton(props: any) {
 

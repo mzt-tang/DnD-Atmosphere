@@ -1,7 +1,7 @@
 import React from 'react';
 import { useState } from 'react';
 
-import {db} from "../constants/Firebase";
+import {db} from "../constants";
 import {ErrorMessage} from "../components";
 import {LoginScreen} from "../screens";
 
