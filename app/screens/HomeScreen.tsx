@@ -1,7 +1,7 @@
 import React from "react";
 import {SafeAreaView, StyleSheet, Text, View, TouchableOpacity, StatusBar, ImageBackground} from "react-native";
 
-import {MiniPlayer} from "../components";
+import {MiniPlayer, PlaylistButton} from "../components";
 import {db, QueueInfoContext} from "../constants";
 import {AuthenticatedUserContext} from "../navigation/AuthenticatedUserProvider";
 import {AntDesign} from "@expo/vector-icons";
@@ -11,6 +11,12 @@ const auth = db.auth();
 export default function HomeScreen({navigation}: any) {
     const {queueInfo, setQueueInfo} = React.useContext(QueueInfoContext);
     const { user } = React.useContext<any>(AuthenticatedUserContext);
+    const [playlist, setPlaylist] = React.useState<any>({})
+    React.useEffect(() => {
+        test();
+    }, []);
+
+
     const handleSignOut = async () => {
         try {
             await auth.signOut();
@@ -18,6 +24,25 @@ export default function HomeScreen({navigation}: any) {
             console.log(error);
         }
     };
+
+    async function test() {
+        db.firestore().collection('users').doc(user.uid).onSnapshot(async snapshot => {
+            const soundtrack = await snapshot.data()?.recentlyPlayedSoundtracks;
+            const ref = await db.firestore().collection('soundtrack-categories').doc(soundtrack).get();
+            console.log("BEFORE"+ref);
+            const testing = {
+                title: ref.id,
+                source: ref.data()?.image,
+            }
+            console.log("RIGHT HERE:" + testing.title + "AHH"+testing.source)
+            setPlaylist(testing);
+        });
+
+    }
+
+    // function navToPlayList(){
+    //     navigation.navigate("Playlist", {playlist: props.title, imageSource: props.source});
+    // }
 
     return (
         <SafeAreaView style={styles.background}>
@@ -38,9 +63,16 @@ export default function HomeScreen({navigation}: any) {
                 <Text style={styles.subHeading}>Soundtrack</Text>
                 <View style={styles.container}>
                     <TouchableOpacity style={styles.playlistButton}>
-                        <ImageBackground style={styles.imageBg} source={require("../assets/images/tavern.jpg")} imageStyle={styles.image}>
-                            <Text style={styles.playlistTitle}>Tavern</Text>
-                        </ImageBackground>
+                        {/*<ImageBackground style={styles.imageBg} source={require("../assets/images/tavern.jpg")} imageStyle={styles.image}>*/}
+                        {/*    <Text style={styles.playlistTitle}>Tavern</Text>*/}
+                        {/*</ImageBackground>*/}
+                        <PlaylistButton
+                            source={playlist.source}
+                            title={playlist.title}
+                            navigation={navigation}
+                            navTo="Playlist"
+
+                        />
                     </TouchableOpacity>
                 </View>
 

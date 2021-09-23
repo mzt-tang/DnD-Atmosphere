@@ -5,7 +5,7 @@ import { View, ActivityIndicator } from 'react-native';
 import { AuthenticatedUserContext } from './AuthenticatedUserProvider';
 import AuthenticationStack from "./AuthenticationStack";
 import HomeStack from "./HomeStack";
-import {QueueInfoContext, TrackContext, PlaylistContext, db} from "../constants";
+import {QueueInfoContext, TrackContext, db} from "../constants";
 
 const auth = db.auth();
 
@@ -36,7 +36,6 @@ export default function RootNavigator() {
         trackImage: "",
         trackPlaylist: "",
     });
-    const [playlists, setPlaylists] = React.useState<any[]>([]);
 
     if (isLoading) {
         return (
@@ -50,9 +49,7 @@ export default function RootNavigator() {
         <NavigationContainer>
             {user ? <TrackContext.Provider value={{queue, setQueue}}>
                         <QueueInfoContext.Provider value={{queueInfo, setQueueInfo}}>
-                            <PlaylistContext.Provider value={{playlists, setPlaylists}}>
-                                <HomeStack/>
-                            </PlaylistContext.Provider>
+                            <HomeStack/>
                         </QueueInfoContext.Provider>
                     </TrackContext.Provider> : <AuthenticationStack />}
         </NavigationContainer>
