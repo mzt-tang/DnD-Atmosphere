@@ -1,48 +1,20 @@
 import React from "react";
-import {SafeAreaView, StyleSheet, Text, View, TouchableOpacity, StatusBar, ImageBackground} from "react-native";
+import {SafeAreaView, StyleSheet, Text, View, TouchableOpacity, StatusBar} from "react-native";
 
-import {MiniPlayer, PlaylistButton} from "../components";
-import {db, QueueInfoContext} from "../constants";
+import {MiniPlayer, RecentlyPlayedButton} from "../components";
+import {QueueInfoContext} from "../constants";
 import {AuthenticatedUserContext} from "../navigation/AuthenticatedUserProvider";
 import {AntDesign} from "@expo/vector-icons";
-
-const auth = db.auth();
+import {getRecentlyPlayed, handleSignOut} from "../domainFunctions/domainFunctions";
 
 export default function HomeScreen({navigation}: any) {
-    const {queueInfo, setQueueInfo} = React.useContext(QueueInfoContext);
+    const {queueInfo} = React.useContext(QueueInfoContext);
     const { user } = React.useContext<any>(AuthenticatedUserContext);
     const [recentTrack, setRecentTrack] = React.useState<any>({});
     const [recentBoard, setRecentBoard] = React.useState<any>({});
     React.useEffect(() => {
-        test();
+        getRecentlyPlayed({setRecentTrack, setRecentBoard}, user.uid).then();
     }, []);
-
-
-    const handleSignOut = async () => {
-        try {
-            await auth.signOut();
-        } catch (error) {
-            console.log(error);
-        }
-    };
-
-    async function test() {
-        const userDoc = db.firestore().collection('users').doc(user.uid);
-        userDoc.onSnapshot(async snapshot => {
-            const soundtrack = await snapshot.data()?.recentlyPlayedSoundtracks;
-            const soundBoard = await snapshot.data()?.recentlyPlayedSoundEffects;
-            const trackRef = await db.firestore().collection('soundtrack-categories').doc(soundtrack).get();
-            const boardRef = await db.firestore().collection('soundeffect-categories').doc(soundBoard).get();
-
-            setRecentTrack({title: trackRef.id, source: trackRef.data()?.image});
-            setRecentBoard({title: boardRef.id, source: boardRef.data()?.image});
-
-        });
-    }
-
-    // function navToPlayList(){
-    //     navigation.navigate("Playlist", {playlist: props.title, imageSource: props.source});
-    // }
 
     return (
         <SafeAreaView style={styles.background}>
@@ -62,32 +34,22 @@ export default function HomeScreen({navigation}: any) {
 
                 <Text style={styles.subHeading}>Soundtrack</Text>
                 <View style={styles.container}>
-                    <TouchableOpacity style={styles.playlistButton}>
-                        {/*<ImageBackground style={styles.imageBg} source={require("../assets/images/tavern.jpg")} imageStyle={styles.image}>*/}
-                        {/*    <Text style={styles.playlistTitle}>Tavern</Text>*/}
-                        {/*</ImageBackground>*/}
-                        <PlaylistButton
-                            source={recentTrack.source}
-                            title={recentTrack.title}
-                            navigation={navigation}
-                            navTo="Playlist"
-                        />
-                    </TouchableOpacity>
+                    <RecentlyPlayedButton
+                        source={recentTrack.source}
+                        title={recentTrack.title}
+                        navigation={navigation}
+                        navTo="Playlist"
+                    />
                 </View>
 
                 <Text style={styles.subHeading}>Soundboard</Text>
                 <View style={styles.container}>
-                    <TouchableOpacity style={styles.playlistButton}>
-                        {/*<ImageBackground style={styles.imageBg} source={require("../assets/images/tavern.jpg")} imageStyle={styles.image}>*/}
-                        {/*    <Text style={styles.playlistTitle}>Tavern</Text>*/}
-                        {/*</ImageBackground>*/}
-                        <PlaylistButton
-                            source={recentBoard.source}
-                            title={recentBoard.title}
-                            navigation={navigation}
-                            navTo="Soundboard"
-                        />
-                    </TouchableOpacity>
+                    <RecentlyPlayedButton
+                        source={recentBoard.source}
+                        title={recentBoard.title}
+                        navigation={navigation}
+                        navTo="Soundboard"
+                    />
                 </View>
             </View>
 
@@ -120,9 +82,6 @@ const styles = StyleSheet.create({
         flex: 2,
         padding: 0,
     },
-    playlistButton: {
-        flex: 1,
-    },
     title: {
         marginTop: 5,
         fontSize: 20,
@@ -151,17 +110,7 @@ const styles = StyleSheet.create({
         fontSize: 20,
         marginTop: 15,
     },
-    imageBg: {
-        flex: 1,
-        justifyContent: "flex-end",
-    },
     image: {
         borderRadius: 20,
     },
-    playlistTitle: {
-        color: "white",
-        fontSize: 20,
-        marginLeft: 10,
-        marginTop: 10,
-    }
 })

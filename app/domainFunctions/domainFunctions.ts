@@ -2,6 +2,18 @@ import {db} from "../constants";
 import {Audio} from "expo-av";
 import firebase from "firebase";
 
+// Authentication
+const auth = db.auth();
+
+export const handleSignOut = async () => {
+    try {
+        await auth.signOut();
+    } catch (error) {
+        console.log(error);
+    }
+};
+
+
 export async function loadSoundtrackData({route, setSoundtracks}:any) {
     const soundtrackCollection = await db.firestore().collection("soundtrack-categories").doc(route.params.playlist).get();
     const tracks = soundtrackCollection.data()?.tracks;
@@ -86,5 +98,18 @@ export async function loadPlaylistAudio({trackObject, playlistObject, queue, que
         trackTitle: trackObject.title,
         trackImage: playlistObject.imageSource,
         trackPlaylist: playlistObject.playlist
+    });
+}
+
+export async function getRecentlyPlayed({setRecentTrack, setRecentBoard}: any, userId: string) {
+    const userDoc = db.firestore().collection('users').doc(userId);
+    userDoc.onSnapshot(async snapshot => {
+        const soundtrack = await snapshot.data()?.recentlyPlayedSoundtracks;
+        const soundBoard = await snapshot.data()?.recentlyPlayedSoundEffects;
+        const trackRef = await db.firestore().collection('soundtrack-categories').doc(soundtrack).get();
+        const boardRef = await db.firestore().collection('soundeffect-categories').doc(soundBoard).get();
+
+        setRecentTrack({title: trackRef.id, source: trackRef.data()?.image});
+        setRecentBoard({title: boardRef.id, source: boardRef.data()?.image});
     });
 }

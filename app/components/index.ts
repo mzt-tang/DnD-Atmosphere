@@ -5,6 +5,7 @@ import PlaylistButton from "./PlaylistButton";
 import Search from "./Search";
 import Sound from "./Sound";
 import {Soundtrack} from "./Soundtrack";
+import {RecentlyPlayedButton} from "./RecentlyPlayedButton";
 
 export {
     ErrorMessage,
@@ -14,4 +15,5 @@ export {
     Search,
     Sound,
     Soundtrack,
+    RecentlyPlayedButton,
 }
