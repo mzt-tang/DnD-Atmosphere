@@ -1,8 +1,15 @@
 import React from "react";
 import {StyleSheet, TouchableOpacity, ImageBackground, Text} from "react-native";
 
+/**
+ * Represents a Playlist/Soundboard button
+ * @param props 
+ */
 export default function PlaylistButton(props: any) {
 
+    /**
+     * Navigate to the playlist/soundboard screen depending on the props.navTO
+     */
     function navToPlayList(){
         props.navigation.navigate(props.navTo, {playlist: props.title, imageSource: props.source});
     }

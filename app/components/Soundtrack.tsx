@@ -1,6 +1,10 @@
 import React from "react";
 import {StyleSheet, TouchableOpacity, Text} from "react-native";
 
+/**
+ * Represents a soundtrack in a playlist
+ * @param props props from parent 
+ */
 export const Soundtrack = ({onTrackPress,
                                title,
                                trackObject,

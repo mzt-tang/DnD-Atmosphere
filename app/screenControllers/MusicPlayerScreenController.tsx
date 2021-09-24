@@ -24,10 +24,11 @@ export default function MusicPlayerScreenController({route}: any) {
         }).then().catch();
     }, []);
 
-    function playSound() {
-        console.log('Playing Soundtrack');
-        console.log(sound !== undefined);
 
+    /**
+     * Switches if the playing state of the soundtrack
+     */
+    function playSound() {
         if (!playing){
             sound?.setStatusAsync({shouldPlay: true});
             setPlaying(true);
@@ -37,13 +38,20 @@ export default function MusicPlayerScreenController({route}: any) {
         }
     }
 
+    /**
+     * Updates the current soundtrack position each time it changes
+     * @param playbackStatus The current soundtrack audio playback object
+     */
     function onPlaybackStatusChanged(playbackStatus: AVPlaybackStatus){
-        //console.log(playbackStatus);
         if (playbackStatus.isLoaded){
             setPosition(playbackStatus.positionMillis);
         }
     }
 
+    /**
+     * Converts milliseconds to a formatted string of a time stamp
+     * @param millis milliseconds to convert
+     */
     function millisToTimestamp(millis : number) {
         const date = new Date(millis);
         let seconds = "" + date.getSeconds();
@@ -57,7 +65,6 @@ export default function MusicPlayerScreenController({route}: any) {
     React.useEffect(() => {
         return sound
             ? () => {
-                console.log('Removing listener');
                 sound?.setOnPlaybackStatusUpdate(null);
             }
             : undefined;

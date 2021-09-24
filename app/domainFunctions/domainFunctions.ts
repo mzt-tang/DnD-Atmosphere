@@ -17,17 +17,23 @@ export const handleSignOut = async () => {
 };
 
 //Music Player
+/**
+ * Sets up the music player initial states
+ * @param param0 getters and setters for the states
+ */
 export async function loadSoundMusicPlayer({queue, queueInfo, setSound, onPlaybackStatusChanged, setPlaying, setDuration}: any) {
+    //Get the current soundtrack
     const soundObject = queue[queueInfo.queuePos];
-    console.log("queue?: ", queue!==undefined);
     setSound(soundObject);
 
+    //Setup event listener
     soundObject.setOnPlaybackStatusUpdate(onPlaybackStatusChanged);
+
+    //Set playing and duration states
     const status = await soundObject.getStatusAsync();
     if (status.isLoaded) {
         setPlaying(status.isPlaying);
         setDuration(status.durationMillis);
-        console.log("duration = ", status.durationMillis);
     }
 }
 
@@ -221,11 +227,17 @@ export async function getRecentlyPlayed({setRecentTrack, setRecentBoard}: any, u
 }
 
 // Sound
+/**
+ * Plays a sound effect
+ */
 export async function playSound({sound, playlistId, userId}: any) {
     updateRecentlyPlayedEffects(playlistId, userId);
     await sound?.replayAsync(); //if not null play sound
 }
 
+/**
+ * Loads a single sound effect
+ */
 export async function loadSound({setSound, audioSource, setDuration}:any) {
     console.log('Loading Sound');
     const {sound , status} = await Audio.Sound.createAsync({uri: audioSource});
@@ -236,6 +248,12 @@ export async function loadSound({setSound, audioSource, setDuration}:any) {
     }
 }
 
+/**
+ * Sets the users most recently played soundboard to the current playlist in the database.
+ * 
+ * @param playlistId id of the playlist of the soundtrack that is playing
+ * @param userId id of the current user
+ */
 async function updateRecentlyPlayedEffects(playlistId: string, userId: string) {
     return db.firestore().collection('users').doc(userId).update({
         recentlyPlayedSoundEffects: playlistId

@@ -2,6 +2,10 @@ import React from "react";
 import {StyleSheet, TouchableOpacity, ImageBackground, Text} from "react-native";
 
 export const RecentlyPlayedButton = (props: any) => {
+
+    /**
+     * Navigate to the playlist screen
+     */
     function navToPlayList(){
         props.navigation.navigate(props.navTo, {playlist: props.title, imageSource: props.source});
     }

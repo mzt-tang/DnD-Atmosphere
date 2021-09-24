@@ -8,7 +8,7 @@ export const SoundboardListScreen = ({playlistController, miniplayerController}:
             <View style={styles.container}>
                 <Text style={styles.heading}>Soundboards</Text>
 
-                <ScrollView style={styles.scroll}>
+                <ScrollView>
                     {playlistController}
                 </ScrollView>
             </View>
@@ -34,7 +34,7 @@ const styles = StyleSheet.create({
         marginTop: 35,
     },
     touchable: {
-        borderRadius: 100, //Doesn't work for some reason :( tried it on image as well
+        borderRadius: 100, 
     },
     imageBackground: {
         width: 150,
@@ -59,7 +59,4 @@ const styles = StyleSheet.create({
         borderRadius: 10,
         paddingLeft: 5,
     },
-    scroll: {
-        //backgroundColor: "yellow",
-    }
 })

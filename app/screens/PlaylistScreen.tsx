@@ -34,7 +34,7 @@ const styles = StyleSheet.create({
     },
     backButton: {
         position: "absolute",
-        top: StatusBar.currentHeight, //<< Cool trick
+        top: StatusBar.currentHeight,
         left: 15,
         padding: 10,
     },

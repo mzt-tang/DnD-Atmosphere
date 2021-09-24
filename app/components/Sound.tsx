@@ -5,14 +5,16 @@ import {Audio} from "expo-av";
 import {loadSound, playSound} from "../domainFunctions/domainFunctions";
 import {AuthenticatedUserContext} from "../navigation/AuthenticatedUserProvider";
 
-
+/**
+ * Represents a sound effect in the soundboard
+ * @param props props from parent element
+ */
 export default function Sound({title, key, playlistId, audioSource} : any) {
     const [sound, setSound] = React.useState<Audio.Sound>();
     const [duration, setDuration] = React.useState<number>(0);
     const { user } = React.useContext<any>(AuthenticatedUserContext);
     const userId = user.uid;
 
-    //Loads the sound (Sometimes it just stops working if so restart the server)
     React.useEffect(() => {
         loadSound({setSound, audioSource, setDuration}).then();
     }, []);
@@ -21,7 +23,6 @@ export default function Sound({title, key, playlistId, audioSource} : any) {
     React.useEffect(() => {
         return sound
           ? () => {
-              console.log('Unloading Sound');
               sound.unloadAsync(); }
           : undefined;
       }, []);
