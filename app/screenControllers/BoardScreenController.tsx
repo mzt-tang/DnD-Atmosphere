@@ -7,7 +7,7 @@ import {QueueInfoContext} from "../constants";
 import {loadSoundEffectData} from "../domainFunctions/domainFunctions";
 
 export default function BoardScreenController({route, navigation}: any) {
-    const {queueInfo, setQueueInfo} = React.useContext(QueueInfoContext);
+    const {queueInfo} = React.useContext(QueueInfoContext);
     const [sounds, setSounds] = React.useState<any[]>([]);
 
     React.useEffect(() => {
@@ -27,7 +27,7 @@ export default function BoardScreenController({route, navigation}: any) {
                 }} key={"r" + row[0].key}>
                 {row.map((sound: any) =>
 
-                    <Sound title={sound.title} key={sound.key} audioSource={sound.link}/>
+                    <Sound title={sound.title} key={row.key} playlistId={sound.playlist} audioSource={sound.link}/>
                 )}
             </View>
         )

@@ -115,8 +115,8 @@ export async function getRecentlyPlayed({setRecentTrack, setRecentBoard}: any, u
 }
 
 // Sound
-export async function playSound({sound}: any) {
-    console.log('Playing Sound');
+export async function playSound({sound, playlistId, userId}: any) {
+    updateRecentlyPlayedEffects(playlistId, userId);
     await sound?.replayAsync(); //if not null play sound
 }
 
@@ -128,4 +128,10 @@ export async function loadSound({setSound, audioSource, setDuration}:any) {
     if (status.isLoaded) {
         setDuration(status.durationMillis as number);
     }
+}
+
+async function updateRecentlyPlayedEffects(playlistId: string, userId: string) {
+    return db.firestore().collection('users').doc(userId).update({
+        recentlyPlayedSoundEffects: playlistId
+    })
 }

@@ -3,11 +3,14 @@ import {StyleSheet, Text, TouchableOpacity} from "react-native";
 import {AntDesign} from "@expo/vector-icons";
 import {Audio} from "expo-av";
 import {loadSound, playSound} from "../domainFunctions/domainFunctions";
+import {AuthenticatedUserContext} from "../navigation/AuthenticatedUserProvider";
 
 
-export default function Sound({title, audioSource} : any) {
+export default function Sound({title, key, playlistId, audioSource} : any) {
     const [sound, setSound] = React.useState<Audio.Sound>();
     const [duration, setDuration] = React.useState<number>(0);
+    const { user } = React.useContext<any>(AuthenticatedUserContext);
+    const userId = user.uid;
 
     //Loads the sound (Sometimes it just stops working if so restart the server)
     React.useEffect(() => {
@@ -33,7 +36,7 @@ export default function Sound({title, audioSource} : any) {
     }
     
     return (
-        <TouchableOpacity onPress={playSound} style={styles.button}>
+        <TouchableOpacity onPress={() => playSound({sound, playlistId, userId})} style={styles.button}>
             <Text style={styles.soundTitle}>{title}</Text>
             <AntDesign style={styles.icon} name="caretright" color="white" size={45}/>
             <Text style={styles.soundDuration}>{millisToTimestamp(duration)}</Text>
