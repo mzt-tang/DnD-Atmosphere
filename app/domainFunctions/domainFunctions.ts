@@ -13,6 +13,43 @@ export const handleSignOut = async () => {
     }
 };
 
+//Playlist Library/Soundboard list
+/**
+ * Loads the playlists from the database, transforms into objects which are then stored
+ * in the playlists state for the view to use.
+ */
+export async function loadFromDatabase({setPlaylists}:any, soundType: string) {
+    const playlistsCollection = await firebase.firestore().collection(soundType).get();
+
+    let i = 0;
+    // 2D list since the playlists need to be put in rows
+    let tempPlaylists: any[] = [];
+    let row: any[] = [];
+    playlistsCollection.docs.forEach(doc => {
+        const image = doc.data().image;
+
+        row.push({
+            title: doc.id,
+            source: {uri: image},
+            key: i,
+        });
+
+        // Evert 2nd iteration, push this row and start a new one
+        if (i%2===1) {
+            tempPlaylists.push(row);
+            row = [];
+        }
+        i++;
+    });
+
+    // This is so that the last playlist will still be added if there is an odd number of playlists
+    if (row.length > 0) {
+        tempPlaylists.push(row);
+    }
+
+    setPlaylists(tempPlaylists);
+}
+
 //Playlist Screen
 /**
  * Loads the soundtrack data which is then transformed into objects and stored in the soundtracks state.

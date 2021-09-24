@@ -5,56 +5,21 @@ import {View} from "react-native";
 import {SoundboardListScreen} from "../screens";
 import {QueueInfoContext} from "../constants";
 import {MiniPlayer, PlaylistButton, } from "../components";
+import {loadFromDatabase} from "../domainFunctions/domainFunctions";
 
 export default function SoundboardsScreenController({navigation}: any) {
-    const {queueInfo, setQueueInfo} = React.useContext(QueueInfoContext);
-    const [soundboards, setSoundboards] = React.useState<any[]>([])
+    const {queueInfo} = React.useContext(QueueInfoContext);
+    const [playlists, setPlaylists] = React.useState<any[]>([])
 
     React.useEffect(() => {
-        loadFromDatabase();
+        loadFromDatabase({setPlaylists}, "soundeffect-categories").then().catch();
     }, []);
-
-    /**
-     * Loads the soundboards from the databse, tranforms into objects which are then stored
-     * in the playlists state for the view to use.
-     */
-    async function loadFromDatabase() {
-        const playlistsCollection = await firebase.firestore().collection("soundeffect-categories").get();
-
-        let i = 0;
-        // 2D list since the soundboards need to be put in rows
-        let tempSoundboards: any[] = [];
-        let row: any[] = [];
-        playlistsCollection.docs.forEach(doc => {
-            const image = doc.data().image;
-
-            row.push({
-                title: doc.id,
-                source: {uri: image},
-                key: i,
-            });
-
-            // Evert 2nd iteration, push this row and start a new one
-            if (i%2===1) {
-                tempSoundboards.push(row);
-                row = [];
-            }
-            i++;
-        });
-
-        // This is so that the last soundboard will still be added if there is an odd number of soundboards
-        if (row.length > 0) {
-            tempSoundboards.push(row);
-        }
-
-        setSoundboards(tempSoundboards);
-    }
 
     /**
      * Transforms the soundboard data into PlaylistButton components
      */
     const playlistController = ({navigation}:any) => {
-        return soundboards.map(row =>
+        return playlists.map(row =>
             <View style={{
                 width: "100%",
                 flexDirection: "row",

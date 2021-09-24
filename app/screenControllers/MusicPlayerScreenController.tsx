@@ -9,11 +9,11 @@ export default function MusicPlayerScreenController({route}: any) {
     const [playing, setPlaying] = React.useState<boolean>(false);
     const [position, setPosition] = React.useState<number>(0);
     const [duration, setDuration] = React.useState<number>(0);
-    const {queue, setQueue} = React.useContext(TrackContext);
-    const {queueInfo, setQueueInfo} = React.useContext(QueueInfoContext);
+    const {queue} = React.useContext(TrackContext);
+    const {queueInfo} = React.useContext(QueueInfoContext);
 
     React.useEffect(() => {
-        loadSound();
+        loadSound().then().catch();
     }, []);
 
     async function loadSound() {
