@@ -2,7 +2,7 @@ import React from "react";
 
 import {MiniPlayer, Soundtrack} from "../components";
 import {PlaylistScreen} from "../screens";
-import {loadSoundtrackData, onTrackPress} from "../domainFunctions/playlistControllerFunctions";
+import {loadSoundtrackData, onTrackPress} from "../domainFunctions/domainFunctions";
 import {TrackContext, QueueInfoContext} from "../constants";
 import {AuthenticatedUserContext} from "../navigation/AuthenticatedUserProvider";
 
@@ -13,7 +13,7 @@ export default function PlaylistScreenController({navigation, route}: any) {
     const [soundtracks, setSoundtracks] = React.useState<any[]>([]);
 
     React.useEffect(() => {
-        loadSoundtrackData({route, setSoundtracks});
+        loadSoundtrackData({route, setSoundtracks}).then();
     }, []);
 
 

@@ -1,7 +1,6 @@
 import {db} from "../constants";
 import {Audio} from "expo-av";
-import React, {useEffect} from "react";
-import {AuthenticatedUserContext} from "../navigation/AuthenticatedUserProvider";
+import firebase from "firebase";
 
 export async function loadSoundtrackData({route, setSoundtracks}:any) {
     const soundtrackCollection = await db.firestore().collection("soundtrack-categories").doc(route.params.playlist).get();
@@ -17,6 +16,27 @@ export async function loadSoundtrackData({route, setSoundtracks}:any) {
 
     console.log("Done loading");
     setSoundtracks(tempSoundtracks);
+}
+
+export async function loadSoundEffectData({route, setSounds}: any) {
+    const soundtrackCollection = await firebase.firestore().collection("soundeffect-categories").doc(route.params.playlist).get();
+    const effects = await soundtrackCollection.data()?.effects;
+
+    let tempSounds: any[] = [];
+    let row = [];
+    for (let i = 0; i < effects.length; i++){
+        let track = await effects[i].get();
+        track = track.data();
+        track = {...track, key: i};
+        row.push(track);
+        if (i%3 === 2 || i === effects.length-1) {
+            tempSounds.push(row);
+            row = [];
+        }
+    }
+
+    console.log("Done loading");
+    setSounds(tempSounds);
 }
 
 export async function onTrackPress(
@@ -56,7 +76,7 @@ export async function loadPlaylistAudio({trackObject, playlistObject, queue, que
     }
 
     const playlist:Audio.Sound[] = [];
-    const { sound: soundObject, status: soundStatus} = await Audio.Sound.createAsync({uri: trackObject.link});
+    const { sound: soundObject} = await Audio.Sound.createAsync({uri: trackObject.link});
     playlist.push(soundObject);
 
     setQueue(playlist);

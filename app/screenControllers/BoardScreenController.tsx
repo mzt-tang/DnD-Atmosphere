@@ -1,40 +1,18 @@
 import React from "react";
-import firebase from "firebase";
 import {View} from "react-native";
 
 import {MiniPlayer, Sound} from "../components";
 import {BoardScreen} from "../screens";
 import {QueueInfoContext} from "../constants";
+import {loadSoundEffectData} from "../domainFunctions/domainFunctions";
 
 export default function BoardScreenController({route, navigation}: any) {
     const {queueInfo, setQueueInfo} = React.useContext(QueueInfoContext);
     const [sounds, setSounds] = React.useState<any[]>([]);
 
     React.useEffect(() => {
-        loadSoundtrackData().then();
+        loadSoundEffectData({route, setSounds}).then();
     }, []);
-
-    async function loadSoundtrackData() {
-        const soundtrackCollection = await firebase.firestore().collection("soundeffect-categories").doc(route.params.playlist).get();
-        const effects = await soundtrackCollection.data()?.effects;
-
-        let tempSounds: any[] = [];
-        let row = [];
-        let i = 0;
-        for (let i = 0; i < effects.length; i++){
-            let track = await effects[i].get();
-            track = track.data();
-            track = {...track, key: i};
-            row.push(track);
-            if (i%3 === 2 || i === effects.length-1) {
-                tempSounds.push(row);
-                row = [];
-            }
-        }
-
-        console.log("Done loading");
-        setSounds(tempSounds);
-    }
 
     const playlistController = () => {
         return sounds.map(row =>
