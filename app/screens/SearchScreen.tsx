@@ -1,8 +1,8 @@
-import React from "react";
 import {SafeAreaView, StatusBar, StyleSheet, Text, View} from "react-native";
 import {Search} from "../components";
+import React from "react";
 
-export default function SearchScreen() {
+export const SearchScreen = () => {
     return (
         <SafeAreaView style={styles.background}>
             <View style={styles.appbar}>

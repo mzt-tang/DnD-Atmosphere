@@ -2,10 +2,9 @@ import React from "react";
 
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import HomeScreenController from "../screenControllers/HomeScreenController";
-import SearchScreen from "../screens/SearchScreen";
 import Search from "../components/Search";
 import { MaterialIcons } from "@expo/vector-icons";
-import {LibraryScreenController, SoundboardsScreenController} from "../screenControllers";
+import {LibraryScreenController, SoundboardsScreenController, SearchScreenController} from "../screenControllers";
 
 
 const Tab = createBottomTabNavigator();
@@ -25,7 +24,7 @@ export default function BottomTabNavigation() {
                 }}/>
             <Tab.Screen
                 name={"Search"}
-                component={SearchScreen}
+                component={SearchScreenController}
                 options={{
                     tabBarIcon: ({color}) => <MaterialIcons name="search" color={color} size={35} />
                 }}/>
