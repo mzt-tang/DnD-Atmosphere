@@ -13,7 +13,7 @@ export const handleSignOut = async () => {
     }
 };
 
-
+//Playlist Screen
 /**
  * Loads the soundtrack data which is then transformed into objects and stored in the soundtracks state.
  * @param route route data which is passed by the HomeStack navigator
@@ -34,37 +34,6 @@ export const handleSignOut = async () => {
     }
 
     setSoundtracks(tempSoundtracks);
-}
-
-
-/**
- * Loads the sound effect data which is then transformed into objects and stored in the sounds state.
- * @param route route data which is passed by the HomeStack navigator
- * @param setSounds the setter for the soundtracks state
- */
-export async function loadSoundEffectData({route, setSounds}: any) {
-    const soundtrackCollection = await firebase.firestore().collection("soundeffect-categories").doc(route.params.playlist).get();
-    const effects = await soundtrackCollection.data()?.effects;
-
-    // 2D list because there are multiple rows of sounds
-    let tempSounds: any[] = [];
-    let row = [];
-    for (let i = 0; i < effects.length; i++){
-        let effect = await effects[i].get();
-        effect = effect.data();
-
-        // Set the object to the data from the database plus a unique key
-        effect = {...effect, key: i};
-        row.push(effect);
-
-        // Every 3rd (or the final) iteration push this row and start a new one
-        if (i%3 === 2 || i === effects.length-1) {
-            tempSounds.push(row);
-            row = [];
-        }
-    }
-
-    setSounds(tempSounds);
 }
 
 /**
@@ -127,7 +96,7 @@ async function updateRecentlyPlayed(playlistId: string, userId: string) {
  */
 
 
-export async function loadPlaylistAudio({trackObject, playlistObject, queue, queueInfo, setQueue, setQueueInfo}:any) {
+async function loadPlaylistAudio({trackObject, playlistObject, queue, queueInfo, setQueue, setQueueInfo}:any) {
     // Unload the last played soundtrack unless there isn't one
     if (queueInfo.mpActive){
         queue[queueInfo.queuePos]?.unloadAsync();
@@ -149,6 +118,38 @@ export async function loadPlaylistAudio({trackObject, playlistObject, queue, que
     });
 }
 
+//Board Screen
+/**
+ * Loads the sound effect data which is then transformed into objects and stored in the sounds state.
+ * @param route route data which is passed by the HomeStack navigator
+ * @param setSounds the setter for the soundtracks state
+ */
+export async function loadSoundEffectData({route, setSounds}: any) {
+    const soundtrackCollection = await firebase.firestore().collection("soundeffect-categories").doc(route.params.playlist).get();
+    const effects = await soundtrackCollection.data()?.effects;
+
+    // 2D list because there are multiple rows of sounds
+    let tempSounds: any[] = [];
+    let row = [];
+    for (let i = 0; i < effects.length; i++){
+        let effect = await effects[i].get();
+        effect = effect.data();
+
+        // Set the object to the data from the database plus a unique key
+        effect = {...effect, key: i};
+        row.push(effect);
+
+        // Every 3rd (or the final) iteration push this row and start a new one
+        if (i%3 === 2 || i === effects.length-1) {
+            tempSounds.push(row);
+            row = [];
+        }
+    }
+
+    setSounds(tempSounds);
+}
+
+//Home Screen
 export async function getRecentlyPlayed({setRecentTrack, setRecentBoard}: any, userId: string) {
     const userDoc = db.firestore().collection('users').doc(userId);
     userDoc.onSnapshot(async snapshot => {
