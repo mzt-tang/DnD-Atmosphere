@@ -14,7 +14,12 @@ export const handleSignOut = async () => {
 };
 
 
-export async function loadSoundtrackData({route, setSoundtracks}:any) {
+/**
+ * Loads the soundtrack data which is then transformed into objects and stored in the soundtracks state.
+ * @param route route data which is passed by the HomeStack navigator
+ * @param setSoundtracks the setter for the soundtracks state
+ */
+ export async function loadSoundtrackData({route, setSoundtracks}:any) {
     const soundtrackCollection = await db.firestore().collection("soundtrack-categories").doc(route.params.playlist).get();
     const tracks = soundtrackCollection.data()?.tracks;
 
@@ -22,35 +27,58 @@ export async function loadSoundtrackData({route, setSoundtracks}:any) {
     for (let i = 0; i < tracks.length; i++){
         let track = await tracks[i].get();
         track = track.data();
+
+        //Set the object to the data from the database plus a unique key
         track = {...track, key: i};
         tempSoundtracks.push(track);
     }
 
-    console.log("Done loading");
     setSoundtracks(tempSoundtracks);
 }
 
+
+/**
+ * Loads the sound effect data which is then transformed into objects and stored in the sounds state.
+ * @param route route data which is passed by the HomeStack navigator
+ * @param setSounds the setter for the soundtracks state
+ */
 export async function loadSoundEffectData({route, setSounds}: any) {
     const soundtrackCollection = await firebase.firestore().collection("soundeffect-categories").doc(route.params.playlist).get();
     const effects = await soundtrackCollection.data()?.effects;
 
+    // 2D list because there are multiple rows of sounds
     let tempSounds: any[] = [];
     let row = [];
     for (let i = 0; i < effects.length; i++){
-        let track = await effects[i].get();
-        track = track.data();
-        track = {...track, key: i};
-        row.push(track);
+        let effect = await effects[i].get();
+        effect = effect.data();
+
+        // Set the object to the data from the database plus a unique key
+        effect = {...effect, key: i};
+        row.push(effect);
+
+        // Every 3rd (or the final) iteration push this row and start a new one
         if (i%3 === 2 || i === effects.length-1) {
             tempSounds.push(row);
             row = [];
         }
     }
 
-    console.log("Done loading");
     setSounds(tempSounds);
 }
 
+/**
+ * Called when a soundtrack is pressed.
+ * 
+ * @param trackObject track object of the soundtrack
+ * @param playlistObject playlist object that the soundtrack is from
+ * @param queue queue context
+ * @param queueInfo queueInfo context
+ * @param setQueue queue context setter
+ * @param setQueueInfo queueInfo context setter
+ * @param navigation HomeStack navigator
+ * @param userId the current user id
+ */
 export async function onTrackPress(
     trackObject: any,
     playlistObject: any,
@@ -61,7 +89,7 @@ export async function onTrackPress(
     navigation: any,
     userId: string) {
 
-    await updateRecentlyPlayedTracks(playlistObject.playlist, userId);
+    await updateRecentlyPlayed(playlistObject.playlist, userId);
 
     await loadPlaylistAudio({
         trackObject,
@@ -71,26 +99,46 @@ export async function onTrackPress(
         setQueue,
         setQueueInfo
     });
-    navigation.navigate("MusicPlayer");
 
+    navigation.navigate("MusicPlayer");
 }
 
-async function updateRecentlyPlayedTracks(playlistId: string, userId: string) {
+/**
+ * Sets the users most recently played playlist to the current playlist in the database.
+ * 
+ * @param playlistId id of the playlist of the soundtrack that is playing
+ * @param userId id of the current user
+ */
+async function updateRecentlyPlayed(playlistId: string, userId: string) {
     return db.firestore().collection('users').doc(userId).update({
         recentlyPlayedSoundtracks: playlistId
     })
 }
 
+/**
+ * Load the passed soundtrack by updating the queue context.
+ * 
+ * @param trackObject soundtrack object to be loaded
+ * @param playListObject playlist object of the soundtrack (the playlist the soundtrack is inside)
+ * @param queue queue context
+ * @param queueInfo queueInfo context
+ * @param setQueue queue context setter
+ * @param setQueueInfo queueInfo context setter
+ */
+
+
 export async function loadPlaylistAudio({trackObject, playlistObject, queue, queueInfo, setQueue, setQueueInfo}:any) {
+    // Unload the last played soundtrack unless there isn't one
     if (queueInfo.mpActive){
-        console.log("Unloading queue 0")
         queue[queueInfo.queuePos]?.unloadAsync();
     }
 
+    // Load the passed soundtrack
     const playlist:Audio.Sound[] = [];
     const { sound: soundObject} = await Audio.Sound.createAsync({uri: trackObject.link});
     playlist.push(soundObject);
 
+    // Update global contexts
     setQueue(playlist);
     setQueueInfo({
         ...queueInfo,
