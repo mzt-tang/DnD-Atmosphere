@@ -7,6 +7,11 @@ import {LoginScreen} from "../screens";
 
 const auth = db.auth();
 
+/**
+ * login screen presenter
+ * @param navigation
+ * @constructor
+ */
 export default function LoginScreenController({ navigation }:any) {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');

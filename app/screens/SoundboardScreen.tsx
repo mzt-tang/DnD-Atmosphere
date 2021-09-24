@@ -1,6 +1,13 @@
 import React from "react";
 import {SafeAreaView, ScrollView, StyleSheet, Text, View} from "react-native";
 
+/**
+ * The board screen of a soundboard
+ * @param route
+ * @param playlistController The playlist of
+ * @param miniplayerController
+ * @constructor
+ */
 export const BoardScreen = ({route, playlistController, miniplayerController}:any) => {
     return (
         <SafeAreaView style={styles.background}>

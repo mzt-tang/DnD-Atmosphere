@@ -5,6 +5,10 @@ import {SignupScreenController, LoginScreenController} from '../screenController
 
 const Stack = createStackNavigator();
 
+/**
+ * THe sign in/out stack.
+ * @constructor
+ */
 export default function AuthenticationStack() {
     return (
         <Stack.Navigator headerMode='none'>

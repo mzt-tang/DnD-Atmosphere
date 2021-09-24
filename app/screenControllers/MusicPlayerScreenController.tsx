@@ -5,6 +5,11 @@ import {QueueInfoContext, TrackContext} from "../constants";
 import {MusicPlayerScreen} from "../screens";
 import {loadSoundMusicPlayer} from "../domainFunctions/domainFunctions";
 
+/**
+ * music player presenter
+ * @param route
+ * @constructor
+ */
 export default function MusicPlayerScreenController({route}: any) {
     const [sound, setSound] = React.useState<Audio.Sound>();
     const [playing, setPlaying] = React.useState<boolean>(false);

@@ -6,6 +6,11 @@ import {LibraryScreen} from "../screens";
 import {QueueInfoContext} from "../constants";
 import {loadFromDatabase} from "../domainFunctions/domainFunctions";
 
+/**
+ * soundtrack library screen presenter
+ * @param navigation
+ * @constructor
+ */
 export default function LibraryScreenController({navigation} : any) {
     const {queueInfo} = React.useContext(QueueInfoContext);
     const [playlists, setPlaylists] = React.useState<any[]>([]);

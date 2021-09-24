@@ -6,6 +6,12 @@ import {loadSoundtrackData, onTrackPress} from "../domainFunctions/domainFunctio
 import {TrackContext, QueueInfoContext} from "../constants";
 import {AuthenticatedUserContext} from "../navigation/AuthenticatedUserProvider";
 
+/**
+ * playlist screen presenter
+ * @param navigation
+ * @param route
+ * @constructor
+ */
 export default function PlaylistScreenController({navigation, route}: any) {
     const {queue, setQueue} = React.useContext(TrackContext);
     const {queueInfo, setQueueInfo} = React.useContext(QueueInfoContext);

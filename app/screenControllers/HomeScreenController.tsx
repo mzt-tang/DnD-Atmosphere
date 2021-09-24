@@ -6,6 +6,11 @@ import {AuthenticatedUserContext} from "../navigation/AuthenticatedUserProvider"
 import {getRecentlyPlayed} from "../domainFunctions/domainFunctions";
 import {HomeScreen} from "../screens";
 
+/**
+ * home screen presenter
+ * @param navigation
+ * @constructor
+ */
 export default function HomeScreenController({navigation}: any) {
     const {queueInfo} = React.useContext(QueueInfoContext);
     const { user } = React.useContext<any>(AuthenticatedUserContext);

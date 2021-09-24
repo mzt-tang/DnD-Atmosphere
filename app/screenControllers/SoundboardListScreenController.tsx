@@ -6,6 +6,11 @@ import {QueueInfoContext} from "../constants";
 import {MiniPlayer, PlaylistButton, } from "../components";
 import {loadFromDatabase} from "../domainFunctions/domainFunctions";
 
+/**
+ * Soundscreen controller
+ * @param navigation
+ * @constructor
+ */
 export default function SoundboardsScreenController({navigation}: any) {
     const {queueInfo} = React.useContext(QueueInfoContext);
     const [playlists, setPlaylists] = React.useState<any[]>([])

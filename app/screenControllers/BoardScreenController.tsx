@@ -6,6 +6,12 @@ import {BoardScreen} from "../screens";
 import {QueueInfoContext} from "../constants";
 import {loadSoundEffectData} from "../domainFunctions/domainFunctions";
 
+/**
+ * chosen soundboard screen presenter
+ * @param route
+ * @param navigation
+ * @constructor
+ */
 export default function BoardScreenController({route, navigation}: any) {
     const {queueInfo} = React.useContext(QueueInfoContext);
     const [sounds, setSounds] = React.useState<any[]>([]);

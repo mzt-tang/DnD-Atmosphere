@@ -2,6 +2,18 @@ import React from 'react';
 import { View, StyleSheet, TextInput, TouchableOpacity } from 'react-native';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 
+/**
+ * THe input field for sig
+ * @param leftIcon
+ * @param iconColor
+ * @param rightIcon
+ * @param inputStyle
+ * @param containerStyle
+ * @param placeholderTextColor
+ * @param handlePasswordVisibility
+ * @param rest
+ * @constructor
+ */
 const InputField = ({ leftIcon, iconColor = '#000',
                         rightIcon,
                         inputStyle,

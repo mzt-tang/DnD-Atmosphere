@@ -7,6 +7,10 @@ import { LogBox } from 'react-native';
 
 const Stack = createStackNavigator();
 
+/**
+ * The home stack, containing all the navigation in the app that is not the bottom tab navigation.
+ * @constructor
+ */
 export default function HomeStack() {
 
     LogBox.ignoreLogs(['Setting a timer']);

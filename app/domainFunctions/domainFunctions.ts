@@ -231,7 +231,7 @@ export async function getRecentlyPlayed({setRecentTrack, setRecentBoard}: any, u
  * Plays a sound effect
  */
 export async function playSound({sound, playlistId, userId}: any) {
-    updateRecentlyPlayedEffects(playlistId, userId);
+    await updateRecentlyPlayedEffects(playlistId, userId);
     await sound?.replayAsync(); //if not null play sound
 }
 

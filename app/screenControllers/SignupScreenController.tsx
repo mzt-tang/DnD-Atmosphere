@@ -7,6 +7,11 @@ import {SignupScreen} from "../screens";
 
 const auth = db.auth();
 
+/**
+ * Signup controller
+ * @param navigation
+ * @constructor
+ */
 export default function SignupScreenController({ navigation }:any) {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');

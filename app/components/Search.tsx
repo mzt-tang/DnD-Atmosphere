@@ -2,12 +2,13 @@ import React from "react";
 import {View, StyleSheet, TextInput, FlatList, Text} from "react-native";
 
 import {InstantSearch, connectSearchBox, connectInfiniteHits} from 'react-instantsearch-native';
-import algoliasearch from "algoliasearch";
+import {client} from "../constants/ConfigKeys";
 
-
+/**
+ * The search component that sets up the search API using aloglia connectors.
+ * @constructor
+ */
 export default function Search() {
-    // API key from from the Algolia API
-    const client = algoliasearch('X3LKR35NR9', 'ae4c0b75ed4213da4cc7487e78c42256');
 
     return (
         <View style={styles.mainContainer}>
@@ -22,6 +23,9 @@ export default function Search() {
     );
 }
 
+/**
+ * The searchbox which connects to the algolia api via its connect function
+ */
 const SearchBox = connectSearchBox(({ refine, currentRefinement }) => {
     return (
         <TextInput
@@ -38,6 +42,9 @@ const SearchBox = connectSearchBox(({ refine, currentRefinement }) => {
     );
 });
 
+/**
+ * THe results from the search box which connects to the algolia api via its connect function
+ */
 const Results = connectInfiniteHits(({ hits, hasMore, refineNext }) => {
     const onEndReached = () => {
         if (hasMore) {
@@ -54,6 +61,11 @@ const Results = connectInfiniteHits(({ hits, hasMore, refineNext }) => {
     );
 });
 
+/**
+ * Displaying the results in a flatlist
+ * @param repo
+ * @constructor
+ */
 const Repository = ({ repo }:any) => (
     <View style={styles.mainContainer}>
         <View style={{ flex: 1 }}>

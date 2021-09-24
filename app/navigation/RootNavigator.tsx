@@ -9,6 +9,10 @@ import {QueueInfoContext, TrackContext, db} from "../constants";
 
 const auth = db.auth();
 
+/**
+ * The navigator separating the app and the sign in/out.
+ * @constructor .
+ */
 export default function RootNavigator() {
     const { user, setUser } = useContext<any>(AuthenticatedUserContext);
     const [isLoading, setIsLoading] = useState(true);
@@ -28,6 +32,7 @@ export default function RootNavigator() {
         return unsubscribeAuth;
     }, []);
 
+    // Context hooks
     const [queue, setQueue] = React.useState();
     const [queueInfo, setQueueInfo] = React.useState({
         mpActive: false,
