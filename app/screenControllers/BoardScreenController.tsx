@@ -14,6 +14,9 @@ export default function BoardScreenController({route, navigation}: any) {
         loadSoundEffectData({route, setSounds}).then();
     }, []);
 
+    /**
+     * Transforms the sound effect data into Sound components
+     */
     const playlistController = () => {
         return sounds.map(row =>
             <View style={{
@@ -29,7 +32,11 @@ export default function BoardScreenController({route, navigation}: any) {
             </View>
         )
     }
-
+    
+    /**
+     * Only returns a MiniPlayer component if the MiniPlayer has been activated yet
+     * @param navigation The stack navigation because MiniPlayer needs access to the MusicPlayerScreen
+     */
     const miniplayerController = ({navigation}:any) => {
         return queueInfo.mpActive && <MiniPlayer navigation={navigation}/>
     }
