@@ -14,40 +14,45 @@ export default function SoundboardsScreenController({navigation}: any) {
         loadFromDatabase();
     }, []);
 
+    /**
+     * Loads the soundboards from the databse, tranforms into objects which are then stored
+     * in the playlists state for the view to use.
+     */
     async function loadFromDatabase() {
         const playlistsCollection = await firebase.firestore().collection("soundeffect-categories").get();
 
         let i = 0;
+        // 2D list since the soundboards need to be put in rows
         let tempSoundboards: any[] = [];
         let row: any[] = [];
         playlistsCollection.docs.forEach(doc => {
             const image = doc.data().image;
-            console.log(doc.id);
 
             row.push({
                 title: doc.id,
                 source: {uri: image},
                 key: i,
             });
+
+            // Evert 2nd iteration, push this row and start a new one
             if (i%2===1) {
                 tempSoundboards.push(row);
                 row = [];
             }
             i++;
         });
+
+        // This is so that the last soundboard will still be added if there is an odd number of soundboards
         if (row.length > 0) {
             tempSoundboards.push(row);
         }
 
         setSoundboards(tempSoundboards);
-        console.log("done loading", soundboards);
-
     }
 
-    function navToSoundboard(){
-        navigation.navigate("Soundboard");
-    }
-
+    /**
+     * Transforms the soundboard data into PlaylistButton components
+     */
     const playlistController = ({navigation}:any) => {
         return soundboards.map(row =>
             <View style={{
@@ -56,6 +61,7 @@ export default function SoundboardsScreenController({navigation}: any) {
                 marginBottom: 10,
                 justifyContent: "flex-start"}}
                   key={"r" + row[0].key}>
+
                 {row.map((soundboard: any) =>
                     <PlaylistButton
                         source={soundboard.source}
@@ -65,10 +71,15 @@ export default function SoundboardsScreenController({navigation}: any) {
                         navTo="Soundboard"
                     />
                 )}
+
             </View>
         )
     }
 
+    /**
+     * Only returns a MiniPlayer component if the MiniPlayer has been activated yet
+     * @param navigation The stack navigation because MiniPlayer needs access to the MusicPlayerScreen
+     */
     const miniplayerController = ({navigation}:any) => {
         return queueInfo.mpActive && <MiniPlayer navigation={navigation}/>
     }
