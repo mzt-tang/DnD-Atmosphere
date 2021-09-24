@@ -1,7 +1,7 @@
 import React from "react";
 
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import HomeScreen from "../screens/HomeScreen";
+import HomeScreenController from "../screenControllers/HomeScreenController";
 import SearchScreen from "../screens/SearchScreen";
 import Search from "../components/Search";
 import { MaterialIcons } from "@expo/vector-icons";
@@ -19,7 +19,7 @@ export default function BottomTabNavigation() {
         <Tab.Navigator initialRouteName={"Home"} tabBarOptions={tabBarStyle}>
             <Tab.Screen
                 name="Home"
-                component={HomeScreen}
+                component={HomeScreenController}
                 options={{
                     tabBarIcon: ({color}) => <MaterialIcons name="home" color={color} size={35} />
                 }}/>

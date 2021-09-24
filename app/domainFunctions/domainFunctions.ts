@@ -157,6 +157,8 @@ export async function getRecentlyPlayed({setRecentTrack, setRecentBoard}: any, u
         const trackRef = await db.firestore().collection('soundtrack-categories').doc(soundtrack).get();
         const boardRef = await db.firestore().collection('soundeffect-categories').doc(soundBoard).get();
 
+        console.log(trackRef.data()?.image);
+        console.log(boardRef.data()?.image);
         setRecentTrack({title: trackRef.id, source: trackRef.data()?.image});
         setRecentBoard({title: boardRef.id, source: boardRef.data()?.image});
     });

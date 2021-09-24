@@ -5,6 +5,7 @@ import SoundboardsScreenController from "./SoundboardListScreenController"
 import PlaylistScreenController from "./PlaylistScreenController";
 import MusicPlayerScreenController from "./MusicPlayerScreenController"
 import BoardScreenController from "./BoardScreenController";
+import HomeScreenController from "./HomeScreenController";
 
 export {
     SignupScreenController,
@@ -14,4 +15,5 @@ export {
     PlaylistScreenController,
     MusicPlayerScreenController,
     BoardScreenController,
+    HomeScreenController,
 }

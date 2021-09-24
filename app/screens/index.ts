@@ -1,4 +1,4 @@
-import HomeScreen from "./HomeScreen";
+import {HomeScreen} from "./HomeScreen";
 import {LoginScreen} from "./LoginScreen";
 import {LibraryScreen} from "./LibraryScreen";
 import {MusicPlayerScreen} from "./MusicPlayerScreen";

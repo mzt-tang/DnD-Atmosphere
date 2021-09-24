@@ -1,27 +1,16 @@
-import React from "react";
-import {SafeAreaView, StyleSheet, Text, View, TouchableOpacity, StatusBar} from "react-native";
-
-import {MiniPlayer, RecentlyPlayedButton} from "../components";
-import {QueueInfoContext} from "../constants";
-import {AuthenticatedUserContext} from "../navigation/AuthenticatedUserProvider";
+import {SafeAreaView, StatusBar, StyleSheet, Text, TouchableOpacity, View} from "react-native";
+import {handleSignOut} from "../domainFunctions/domainFunctions";
 import {AntDesign} from "@expo/vector-icons";
-import {getRecentlyPlayed, handleSignOut} from "../domainFunctions/domainFunctions";
+import {RecentlyPlayedButton} from "../components";
+import React from "react";
 
-export default function HomeScreen({navigation}: any) {
-    const {queueInfo} = React.useContext(QueueInfoContext);
-    const { user } = React.useContext<any>(AuthenticatedUserContext);
-    const [recentTrack, setRecentTrack] = React.useState<any>({});
-    const [recentBoard, setRecentBoard] = React.useState<any>({});
-    React.useEffect(() => {
-        getRecentlyPlayed({setRecentTrack, setRecentBoard}, user.uid).then();
-    }, []);
-
+export const HomeScreen = ({email, recentTrack, recentBoard, miniplayerController, navigation}: any) => {
     return (
         <SafeAreaView style={styles.background}>
             <View style={styles.appbar}>
                 <View style={{flex: 1}}>
                     <Text style={styles.welcome}>Welcome</Text>
-                    <Text style={styles.title}>{user.email}!</Text>
+                    <Text style={styles.title}>{email}!</Text>
                 </View>
 
                 <TouchableOpacity style={styles.logoutButton} onPress={handleSignOut}>
@@ -35,7 +24,7 @@ export default function HomeScreen({navigation}: any) {
                 <Text style={styles.subHeading}>Soundtrack</Text>
                 <View style={styles.container}>
                     <RecentlyPlayedButton
-                        source={recentTrack.source}
+                        source={{uri: recentTrack.source}}
                         title={recentTrack.title}
                         navigation={navigation}
                         navTo="Playlist"
@@ -45,7 +34,7 @@ export default function HomeScreen({navigation}: any) {
                 <Text style={styles.subHeading}>Soundboard</Text>
                 <View style={styles.container}>
                     <RecentlyPlayedButton
-                        source={recentBoard.source}
+                        source={{uri: recentBoard.source}}
                         title={recentBoard.title}
                         navigation={navigation}
                         navTo="Soundboard"
@@ -53,9 +42,9 @@ export default function HomeScreen({navigation}: any) {
                 </View>
             </View>
 
-            {queueInfo.mpActive && <MiniPlayer navigation={navigation}/>}
+            {miniplayerController}
         </SafeAreaView>
-    );
+    )
 }
 
 const styles = StyleSheet.create({
@@ -83,13 +72,14 @@ const styles = StyleSheet.create({
         padding: 0,
     },
     title: {
-        marginTop: 5,
+        flex: 1,
         fontSize: 20,
         fontWeight: '600',
         color: '#fff',
         marginLeft: 20,
     },
     welcome: {
+        flex: 1,
         fontSize: 28,
         fontWeight: '600',
         color: '#fff',

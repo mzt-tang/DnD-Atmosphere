@@ -28,7 +28,8 @@ const SearchBox = connectSearchBox(({ refine, currentRefinement }) => {
             style={styles.textInput}
             onChangeText={text => refine(text)}
             value={currentRefinement}
-            placeholder="Search Something"
+            placeholder="'Tavern' or 'Titan'"
+            placeholderTextColor='white'
             clearButtonMode="always"
             spellCheck={false}
             autoCorrect={false}
