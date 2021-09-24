@@ -2,31 +2,16 @@ import React from "react";
 import {StyleSheet, Text, TouchableOpacity} from "react-native";
 import {AntDesign} from "@expo/vector-icons";
 import {Audio} from "expo-av";
+import {loadSound, playSound} from "../domainFunctions/domainFunctions";
 
 
-export default function Sound(props : any) {
+export default function Sound({title, audioSource} : any) {
     const [sound, setSound] = React.useState<Audio.Sound>();
     const [duration, setDuration] = React.useState<number>(0);
 
-    async function playSound() {
-        console.log('Playing Sound');
-        await sound?.replayAsync(); //if not null play sound 
-    }
-
-    async function loadSound() {
-        console.log('Loading Sound');
-        const { sound , status} = await Audio.Sound.createAsync({uri: props.audioSource});
-
-        setSound(sound);
-        if (status.isLoaded) {
-            setDuration(status.durationMillis as number);
-        }
-    }
-
-
     //Loads the sound (Sometimes it just stops working if so restart the server)
     React.useEffect(() => {
-        loadSound();
+        loadSound({setSound, audioSource, setDuration}).then();
     }, []);
 
     //Unloads the sound
@@ -49,7 +34,7 @@ export default function Sound(props : any) {
     
     return (
         <TouchableOpacity onPress={playSound} style={styles.button}>
-            <Text style={styles.soundTitle}>{props.title}</Text>
+            <Text style={styles.soundTitle}>{title}</Text>
             <AntDesign style={styles.icon} name="caretright" color="white" size={45}/>
             <Text style={styles.soundDuration}>{millisToTimestamp(duration)}</Text>
         </TouchableOpacity> 

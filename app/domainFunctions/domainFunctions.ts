@@ -61,7 +61,7 @@ export async function onTrackPress(
     navigation: any,
     userId: string) {
 
-    await updateRecentlyPlayed(playlistObject.playlist, userId);
+    await updateRecentlyPlayedTracks(playlistObject.playlist, userId);
 
     await loadPlaylistAudio({
         trackObject,
@@ -75,7 +75,7 @@ export async function onTrackPress(
 
 }
 
-async function updateRecentlyPlayed(playlistId: string, userId: string) {
+async function updateRecentlyPlayedTracks(playlistId: string, userId: string) {
     return db.firestore().collection('users').doc(userId).update({
         recentlyPlayedSoundtracks: playlistId
     })
@@ -112,4 +112,20 @@ export async function getRecentlyPlayed({setRecentTrack, setRecentBoard}: any, u
         setRecentTrack({title: trackRef.id, source: trackRef.data()?.image});
         setRecentBoard({title: boardRef.id, source: boardRef.data()?.image});
     });
+}
+
+// Sound
+export async function playSound({sound}: any) {
+    console.log('Playing Sound');
+    await sound?.replayAsync(); //if not null play sound
+}
+
+export async function loadSound({setSound, audioSource, setDuration}:any) {
+    console.log('Loading Sound');
+    const {sound , status} = await Audio.Sound.createAsync({uri: audioSource});
+
+    setSound(sound);
+    if (status.isLoaded) {
+        setDuration(status.durationMillis as number);
+    }
 }
