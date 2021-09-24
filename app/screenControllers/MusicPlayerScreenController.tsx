@@ -3,6 +3,7 @@ import {Audio, AVPlaybackStatus} from "expo-av";
 
 import {QueueInfoContext, TrackContext} from "../constants";
 import {MusicPlayerScreen} from "../screens";
+import {loadSoundMusicPlayer} from "../domainFunctions/domainFunctions";
 
 export default function MusicPlayerScreenController({route}: any) {
     const [sound, setSound] = React.useState<Audio.Sound>();
@@ -13,22 +14,15 @@ export default function MusicPlayerScreenController({route}: any) {
     const {queueInfo} = React.useContext(QueueInfoContext);
 
     React.useEffect(() => {
-        loadSound().then().catch();
+        loadSoundMusicPlayer({
+            queue,
+            queueInfo,
+            setSound,
+            onPlaybackStatusChanged,
+            setPlaying,
+            setDuration
+        }).then().catch();
     }, []);
-
-    async function loadSound() {
-        const soundObject = queue[queueInfo.queuePos];
-        console.log("queue?: ", queue!==undefined);
-        setSound(soundObject);
-
-        soundObject.setOnPlaybackStatusUpdate(onPlaybackStatusChanged);
-        const status = await soundObject.getStatusAsync();
-        if (status.isLoaded) {
-            setPlaying(status.isPlaying);
-            setDuration(status.durationMillis);
-            console.log("duration = ", status.durationMillis);
-        }
-    }
 
     function playSound() {
         console.log('Playing Soundtrack');

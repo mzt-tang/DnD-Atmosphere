@@ -24,6 +24,9 @@ export default function LoginScreenController({ navigation }:any) {
         }
     };
 
+    /**
+     * Login with email and password using authentication.
+     */
     const onLogin = async () => {
         try {
             if (email !== '' && password !== '') {

@@ -24,6 +24,9 @@ export default function SignupScreenController({ navigation }:any) {
         }
     };
 
+    /**
+     * Sign up, also creates by default a recently played soundtrack and effects playlist to tavern.
+     */
     const onHandleSignup = async () => {
         try {
             if (email !== '' && password !== '') {

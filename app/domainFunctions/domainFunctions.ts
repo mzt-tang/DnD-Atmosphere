@@ -5,6 +5,9 @@ import firebase from "firebase";
 // Authentication
 const auth = db.auth();
 
+/**
+ * Sign out
+ */
 export const handleSignOut = async () => {
     try {
         await auth.signOut();
@@ -12,6 +15,21 @@ export const handleSignOut = async () => {
         console.log(error);
     }
 };
+
+//Music Player
+export async function loadSoundMusicPlayer({queue, queueInfo, setSound, onPlaybackStatusChanged, setPlaying, setDuration}: any) {
+    const soundObject = queue[queueInfo.queuePos];
+    console.log("queue?: ", queue!==undefined);
+    setSound(soundObject);
+
+    soundObject.setOnPlaybackStatusUpdate(onPlaybackStatusChanged);
+    const status = await soundObject.getStatusAsync();
+    if (status.isLoaded) {
+        setPlaying(status.isPlaying);
+        setDuration(status.durationMillis);
+        console.log("duration = ", status.durationMillis);
+    }
+}
 
 //Playlist Library/Soundboard list
 /**

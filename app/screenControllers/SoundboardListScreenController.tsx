@@ -1,5 +1,4 @@
 import React from "react";
-import firebase from "firebase";
 import {View} from "react-native";
 
 import {SoundboardListScreen} from "../screens";
