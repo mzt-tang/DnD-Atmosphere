@@ -11,7 +11,7 @@ export default function BoardScreenController({route, navigation}: any) {
     const [sounds, setSounds] = React.useState<any[]>([]);
 
     React.useEffect(() => {
-        loadSoundtrackData();
+        loadSoundtrackData().then();
     }, []);
 
     async function loadSoundtrackData() {

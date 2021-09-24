@@ -9,7 +9,6 @@ import {QueueInfoContext} from "../constants";
 export default function LibraryScreenController({navigation} : any) {
     const {queueInfo, setQueueInfo} = React.useContext(QueueInfoContext);
     const [playlists, setPlaylists] = React.useState<any[]>([]);
-    //const {playlists, setPlaylists} = React.useContext(PlaylistContext);
 
     React.useEffect(() => {
         loadFromDatabase();

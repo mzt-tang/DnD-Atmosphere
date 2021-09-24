@@ -11,7 +11,8 @@ const auth = db.auth();
 export default function HomeScreen({navigation}: any) {
     const {queueInfo, setQueueInfo} = React.useContext(QueueInfoContext);
     const { user } = React.useContext<any>(AuthenticatedUserContext);
-    const [playlist, setPlaylist] = React.useState<any>({})
+    const [recentTrack, setRecentTrack] = React.useState<any>({});
+    const [recentBoard, setRecentBoard] = React.useState<any>({});
     React.useEffect(() => {
         test();
     }, []);
@@ -26,18 +27,17 @@ export default function HomeScreen({navigation}: any) {
     };
 
     async function test() {
-        db.firestore().collection('users').doc(user.uid).onSnapshot(async snapshot => {
+        const userDoc = db.firestore().collection('users').doc(user.uid);
+        userDoc.onSnapshot(async snapshot => {
             const soundtrack = await snapshot.data()?.recentlyPlayedSoundtracks;
-            const ref = await db.firestore().collection('soundtrack-categories').doc(soundtrack).get();
-            console.log("BEFORE"+ref);
-            const testing = {
-                title: ref.id,
-                source: ref.data()?.image,
-            }
-            console.log("RIGHT HERE:" + testing.title + "AHH"+testing.source)
-            setPlaylist(testing);
-        });
+            const soundBoard = await snapshot.data()?.recentlyPlayedSoundEffects;
+            const trackRef = await db.firestore().collection('soundtrack-categories').doc(soundtrack).get();
+            const boardRef = await db.firestore().collection('soundeffect-categories').doc(soundtrack).get();
 
+            setRecentTrack({title: trackRef.id, source: trackRef.data()?.image});
+            setRecentBoard({title: boardRef.id, source: boardRef.data()?.image});
+
+        });
     }
 
     // function navToPlayList(){
@@ -67,11 +67,10 @@ export default function HomeScreen({navigation}: any) {
                         {/*    <Text style={styles.playlistTitle}>Tavern</Text>*/}
                         {/*</ImageBackground>*/}
                         <PlaylistButton
-                            source={playlist.source}
-                            title={playlist.title}
+                            source={recentTrack.source}
+                            title={recentTrack.title}
                             navigation={navigation}
                             navTo="Playlist"
-
                         />
                     </TouchableOpacity>
                 </View>
@@ -79,9 +78,15 @@ export default function HomeScreen({navigation}: any) {
                 <Text style={styles.subHeading}>Soundboard</Text>
                 <View style={styles.container}>
                     <TouchableOpacity style={styles.playlistButton}>
-                        <ImageBackground style={styles.imageBg} source={require("../assets/images/tavern.jpg")} imageStyle={styles.image}>
-                            <Text style={styles.playlistTitle}>Tavern</Text>
-                        </ImageBackground>
+                        {/*<ImageBackground style={styles.imageBg} source={require("../assets/images/tavern.jpg")} imageStyle={styles.image}>*/}
+                        {/*    <Text style={styles.playlistTitle}>Tavern</Text>*/}
+                        {/*</ImageBackground>*/}
+                        <PlaylistButton
+                            source={recentBoard.source}
+                            title={recentBoard.title}
+                            navigation={navigation}
+                            navTo="Soundboard"
+                        />
                     </TouchableOpacity>
                 </View>
             </View>

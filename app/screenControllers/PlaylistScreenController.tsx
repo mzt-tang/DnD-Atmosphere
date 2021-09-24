@@ -4,10 +4,12 @@ import {MiniPlayer, Soundtrack} from "../components";
 import {PlaylistScreen} from "../screens";
 import {loadSoundtrackData, onTrackPress} from "../domainFunctions/playlistControllerFunctions";
 import {TrackContext, QueueInfoContext} from "../constants";
+import {AuthenticatedUserContext} from "../navigation/AuthenticatedUserProvider";
 
 export default function PlaylistScreenController({navigation, route}: any) {
     const {queue, setQueue} = React.useContext(TrackContext);
     const {queueInfo, setQueueInfo} = React.useContext(QueueInfoContext);
+    const { user } = React.useContext<any>(AuthenticatedUserContext);
     const [soundtracks, setSoundtracks] = React.useState<any[]>([]);
 
     React.useEffect(() => {
@@ -28,6 +30,7 @@ export default function PlaylistScreenController({navigation, route}: any) {
                 setQueue={setQueue}
                 setQueueInfo={setQueueInfo}
                 navigation={navigation}
+                userId={user.uid}
             />);
     }
 

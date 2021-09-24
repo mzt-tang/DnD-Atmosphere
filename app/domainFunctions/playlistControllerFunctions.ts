@@ -1,8 +1,10 @@
-import firebase from "firebase/app";
+import {db} from "../constants";
 import {Audio} from "expo-av";
+import React, {useEffect} from "react";
+import {AuthenticatedUserContext} from "../navigation/AuthenticatedUserProvider";
 
 export async function loadSoundtrackData({route, setSoundtracks}:any) {
-    const soundtrackCollection = await firebase.firestore().collection("soundtrack-categories").doc(route.params.playlist).get();
+    const soundtrackCollection = await db.firestore().collection("soundtrack-categories").doc(route.params.playlist).get();
     const tracks = soundtrackCollection.data()?.tracks;
 
     let tempSoundtracks: any[] = [];
@@ -24,7 +26,11 @@ export async function onTrackPress(
     queueInfo: any,
     setQueue: any,
     setQueueInfo: any,
-    navigation: any) {
+    navigation: any,
+    userId: string) {
+
+    await updateRecentlyPlayed(playlistObject.playlist, userId);
+
     await loadPlaylistAudio({
         trackObject,
         playlistObject,
@@ -35,6 +41,12 @@ export async function onTrackPress(
     });
     navigation.navigate("MusicPlayer");
 
+}
+
+async function updateRecentlyPlayed(playlistId: string, userId: string) {
+    return db.firestore().collection('users').doc(userId).update({
+        recentlyPlayedSoundtracks: playlistId
+    })
 }
 
 export async function loadPlaylistAudio({trackObject, playlistObject, queue, queueInfo, setQueue, setQueueInfo}:any) {

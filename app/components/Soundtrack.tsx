@@ -9,7 +9,7 @@ export const Soundtrack = ({onTrackPress,
                                queueInfo,
                                setQueue,
                                setQueueInfo,
-                               navigation}: any) => {
+                               navigation, userId}: any) => {
 
 
     return (
@@ -20,7 +20,8 @@ export const Soundtrack = ({onTrackPress,
             queueInfo,
             setQueue,
             setQueueInfo,
-            navigation
+            navigation,
+            userId,
         )} style={styles.soundtrack}>
             <Text style={styles.trackTitle}>{title}</Text>
             <Text style={styles.trackArtist}>Artist Name</Text>
