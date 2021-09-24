@@ -17,6 +17,9 @@ export default function PlaylistScreenController({navigation, route}: any) {
     }, []);
 
 
+    /**
+     * Transforms the playlist data into Soundtrack components
+     */
     const playlistController = () => {
         return soundtracks.map(soundtrack =>
             <Soundtrack
@@ -34,10 +37,18 @@ export default function PlaylistScreenController({navigation, route}: any) {
             />);
     }
 
+    /**
+     * Goes back to the LibarayScreen
+     * @param navigation HomeStack navigator
+     */
     const onNavGoBack = ({navigation}: any) => {
         return navigation.goBack;
     }
 
+    /**
+     * Only returns a MiniPlayer component if the MiniPlayer has been activated yet
+     * @param navigation The stack navigation because MiniPlayer needs access to the MusicPlayerScreen
+     */
     const miniplayerController = ({navigation}: any) => {
         return queueInfo.mpActive && <MiniPlayer navigation={navigation}/>
     }
