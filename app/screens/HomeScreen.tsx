@@ -32,7 +32,7 @@ export default function HomeScreen({navigation}: any) {
             const soundtrack = await snapshot.data()?.recentlyPlayedSoundtracks;
             const soundBoard = await snapshot.data()?.recentlyPlayedSoundEffects;
             const trackRef = await db.firestore().collection('soundtrack-categories').doc(soundtrack).get();
-            const boardRef = await db.firestore().collection('soundeffect-categories').doc(soundtrack).get();
+            const boardRef = await db.firestore().collection('soundeffect-categories').doc(soundBoard).get();
 
             setRecentTrack({title: trackRef.id, source: trackRef.data()?.image});
             setRecentBoard({title: boardRef.id, source: boardRef.data()?.image});

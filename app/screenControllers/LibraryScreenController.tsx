@@ -11,44 +11,8 @@ export default function LibraryScreenController({navigation} : any) {
     const [playlists, setPlaylists] = React.useState<any[]>([]);
 
     React.useEffect(() => {
-        loadFromDatabase();
+        loadFromDatabase({setPlaylists});
     }, []);
-
-    /**
-     * Loads the playlists from the databse, tranforms into objects which are then stored
-     * in the playlists state for the view to use.
-     */
-    async function loadFromDatabase() {
-        const playlistsCollection = await firebase.firestore().collection("soundtrack-categories").get();
-
-        let i = 0;
-        // 2D list since the playlists need to be put in rows
-        let tempPlaylists: any[] = [];
-        let row: any[] = [];
-        playlistsCollection.docs.forEach(doc => {
-            const image = doc.data().image;
-
-            row.push({
-                title: doc.id,
-                source: {uri: image},
-                key: i,
-            });
-
-            // Evert 2nd iteration, push this row and start a new one
-            if (i%2===1) {
-                tempPlaylists.push(row);
-                row = [];
-            }
-            i++;
-        });
-
-        // This is so that the last playlist will still be added if there is an odd number of playlists
-        if (row.length > 0) {
-            tempPlaylists.push(row);
-        }
-
-        setPlaylists(tempPlaylists);
-    }
 
     /**
      * Transforms the playlist data into PlaylistButton components
@@ -90,4 +54,40 @@ export default function LibraryScreenController({navigation} : any) {
             miniplayerController={miniplayerController({navigation})}
         />
     );
+}
+
+/**
+ * Loads the playlists from the databse, tranforms into objects which are then stored
+ * in the playlists state for the view to use.
+ */
+async function loadFromDatabase({setPlaylists}:any) {
+    const playlistsCollection = await firebase.firestore().collection("soundtrack-categories").get();
+
+    let i = 0;
+    // 2D list since the playlists need to be put in rows
+    let tempPlaylists: any[] = [];
+    let row: any[] = [];
+    playlistsCollection.docs.forEach(doc => {
+        const image = doc.data().image;
+
+        row.push({
+            title: doc.id,
+            source: {uri: image},
+            key: i,
+        });
+
+        // Evert 2nd iteration, push this row and start a new one
+        if (i%2===1) {
+            tempPlaylists.push(row);
+            row = [];
+        }
+        i++;
+    });
+
+    // This is so that the last playlist will still be added if there is an odd number of playlists
+    if (row.length > 0) {
+        tempPlaylists.push(row);
+    }
+
+    setPlaylists(tempPlaylists);
 }
