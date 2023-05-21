@@ -2,7 +2,7 @@ This is a music app designed for DND sessions.
 The intention of the app is to play ambient soundtracks during a DND session that matches the themes of the situation during the game. E.g. drinking in a tavern - some tavern soundtrack plays in the background during the session.
 The secondary intention of the app is to provide a soundboard that the DM can play to provide in sound effects that match what's going on in game. E.g. flipping a coin to pay for a drink to a bartender - play the flip coin sound effect.
 
-Made is React Expo.
+Made in React Expo.
 Team members: Michael Tang, Chris Russell
 
 All of the code is within the app/ folder (except for App.tsx)
